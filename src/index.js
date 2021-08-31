@@ -1,10 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
-import { BrowserRouter as Router } from "react-router-dom";
-import { createStore, applyMiddleware, compose } from "redux";
 import { Provider } from "react-redux";
+import { createStore, compose, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
+import { BrowserRouter as Router } from "react-router-dom";
 
 import allReducers from "./reducers";
 
@@ -17,11 +17,11 @@ const store = createStore(
 
 ReactDOM.render(
   <React.StrictMode>
-    <Router>
-      <Provider store={store}>
+    <Provider store={store}>
+      <Router>
         <App />
-      </Provider>
-    </Router>
+      </Router>
+    </Provider>
   </React.StrictMode>,
   document.getElementById("root")
 );
