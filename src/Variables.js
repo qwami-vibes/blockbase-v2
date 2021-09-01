@@ -8,3 +8,4 @@ export const successColor = "#3EDE4E";
 
 export const grey = "#333";
 export const lightGrey = "#a1a1a1";
+export const lighterGrey = "#e4e4e4";
