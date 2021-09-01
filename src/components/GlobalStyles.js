@@ -28,6 +28,11 @@ input, button {
     }
 }
 
+button {
+    background: transparent;
+    border: 0;
+}
+
 `;
 
 export default GlobalStyles;

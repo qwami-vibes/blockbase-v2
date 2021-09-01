@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { useLocation } from "react-router";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import logoSmall from "../assets/blockbase-small.png";
 import ProfilePic from "../assets/background-image.png";
@@ -14,6 +15,7 @@ import {
 } from "react-ionicons";
 import {
   colorWhite,
+  grey,
   lighterGrey,
   primaryColor,
   secondaryColor,
@@ -21,9 +23,10 @@ import {
 
 const Aside = () => {
   const location = useLocation();
+  const theme = useSelector((state) => state.theme);
 
   return (
-    <StyledAside>
+    <StyledAside className={theme ? "dark" : null}>
       <StyledLogo>
         <img src={logoSmall} alt="Blockbase Logo" />
       </StyledLogo>
@@ -31,7 +34,7 @@ const Aside = () => {
         <StyledLink
           className={location.pathname === "/dashboard" ? "active" : null}
         >
-          <Link to="/dashboard">
+          <Link className={theme ? "dark" : null} to="/dashboard">
             <GridOutline width="3rem" height="3rem" />
           </Link>
         </StyledLink>
@@ -40,7 +43,7 @@ const Aside = () => {
             location.pathname === "/dashboard/trends" ? "active" : null
           }
         >
-          <Link to="/dashboard/trends">
+          <Link className={theme ? "dark" : null} to="/dashboard/trends">
             <TrendingUpOutline width="3rem" height="3rem" />
           </Link>
         </StyledLink>
@@ -49,7 +52,7 @@ const Aside = () => {
             location.pathname === "/dashboard/transactions" ? "active" : null
           }
         >
-          <Link to="/dashboard/transactions">
+          <Link className={theme ? "dark" : null} to="/dashboard/transactions">
             <SwapHorizontalOutline width="3rem" height="3rem" />
           </Link>
         </StyledLink>
@@ -58,7 +61,7 @@ const Aside = () => {
             location.pathname === "/dashboard/wallet" ? "active" : null
           }
         >
-          <Link to="/dashboard/wallet">
+          <Link className={theme ? "dark" : null} to="/dashboard/wallet">
             <WalletOutline width="3rem" height="3rem" />
           </Link>
         </StyledLink>
@@ -67,7 +70,7 @@ const Aside = () => {
         <img src={ProfilePic} alt="Profile Pic" />
       </StyledProfile>
       <StyledLinks>
-        <StyledLink>
+        <StyledLink className={theme ? "dark" : null}>
           <LogOutOutline width="3rem" height="3rem" />
         </StyledLink>
       </StyledLinks>
@@ -80,6 +83,12 @@ const StyledAside = styled.aside`
   background: ${lighterGrey};
   display: grid;
   grid-template-rows: 15vh 55vh 20vh 10vh;
+
+  &.dark {
+    background: ${grey};
+    color: ${colorWhite};
+    fill: ${colorWhite};
+  }
 `;
 
 const StyledFlex = styled.div`
@@ -106,6 +115,14 @@ const StyledLink = styled(StyledFlex)`
   padding: 1.5rem;
   border-radius: 50%;
   transition: all 0.5s ease-in;
+
+  &.dark,
+  a.dark {
+    svg {
+      color: ${colorWhite};
+      fill: ${colorWhite};
+    }
+  }
 
   &.active {
     background: linear-gradient(90deg, ${primaryColor}, ${secondaryColor});
