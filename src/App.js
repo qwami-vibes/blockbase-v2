@@ -1,7 +1,7 @@
 import React from "react";
 import { Route, Switch } from "react-router";
 
-import Signup from "./auth/Signup";
+// import Signup from "./auth/Signup";
 import Dashboard from "./pages/Dashboard";
 import GlobalStyles from "./components/GlobalStyles";
 
