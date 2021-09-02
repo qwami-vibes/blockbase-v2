@@ -3,7 +3,7 @@ const themeReducer = (state = false, action) => {
     case "SET_THEME":
       return !state;
     default:
-      return !state;
+      return state;
   }
 };
 

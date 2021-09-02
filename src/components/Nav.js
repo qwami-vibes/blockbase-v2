@@ -42,9 +42,9 @@ const StyledNav = styled.nav`
 
 const StyledName = styled.div`
   display: flex;
-  justify-content: center;
   align-items: center;
   font-size: 2rem;
+  margin-left: 22%;
 `;
 
 const StyledControls = styled.div`
