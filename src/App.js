@@ -10,8 +10,8 @@ function App() {
     <div className="App">
       <GlobalStyles />
       <Switch>
-        <Route exact path="/" component={Signup} />
-        <Route path="/dashboard" component={Dashboard} />
+        {/* <Route exact path="/" component={Signup} /> */}
+        <Route path="/" component={Dashboard} />
       </Switch>
     </div>
   );
