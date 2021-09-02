@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { Route, Switch } from "react-router";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import Aside from "../components/Aside";
 import Nav from "../components/Nav";
 import AccountBrief from "../components/AccountBrief";
+
+import { getCoins } from "../api/api";
 
 import WatchList from "../components/WatchList";
 import Wallet from "../components/Wallet";
@@ -15,6 +17,11 @@ import { colorWhite, greyDarker } from "../Variables";
 
 const Dashboard = () => {
   const theme = useSelector((state) => state.theme);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getCoins());
+  }, [dispatch]);
 
   return (
     <StyledDashboard className={theme ? "dark" : null}>
