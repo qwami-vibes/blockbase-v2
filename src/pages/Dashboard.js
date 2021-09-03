@@ -30,9 +30,9 @@ const Dashboard = () => {
       <AccountBrief />
       <Switch>
         <Route path="/dashboard" exact component={WatchList} />
-        <Route path="/dashboard/transactions" component={Transactions} />
-        <Route path="/dashboard/trends" component={Trends} />
-        <Route path="/dashboard/wallet" component={Wallet} />
+        <Route path="/transactions" component={Transactions} />
+        <Route path="/trends" component={Trends} />
+        <Route path="/wallet" component={Wallet} />
       </Switch>
     </StyledDashboard>
   );

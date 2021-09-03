@@ -39,29 +39,23 @@ const Aside = () => {
           </Link>
         </StyledLink>
         <StyledLink
-          className={
-            location.pathname === "/dashboard/trends" ? "active" : null
-          }
+          className={location.pathname === "/trends" ? "active" : null}
         >
-          <Link className={theme ? "dark" : null} to="/dashboard/trends">
+          <Link className={theme ? "dark" : null} to="/trends">
             <TrendingUpOutline width="3rem" height="3rem" />
           </Link>
         </StyledLink>
         <StyledLink
-          className={
-            location.pathname === "/dashboard/transactions" ? "active" : null
-          }
+          className={location.pathname === "/transactions" ? "active" : null}
         >
-          <Link className={theme ? "dark" : null} to="/dashboard/transactions">
+          <Link className={theme ? "dark" : null} to="/transactions">
             <SwapHorizontalOutline width="3rem" height="3rem" />
           </Link>
         </StyledLink>
         <StyledLink
-          className={
-            location.pathname === "/dashboard/wallet" ? "active" : null
-          }
+          className={location.pathname === "/wallet" ? "active" : null}
         >
-          <Link className={theme ? "dark" : null} to="/dashboard/wallet">
+          <Link className={theme ? "dark" : null} to="/wallet">
             <WalletOutline width="3rem" height="3rem" />
           </Link>
         </StyledLink>

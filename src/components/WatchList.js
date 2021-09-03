@@ -5,12 +5,12 @@ import { useSelector } from "react-redux";
 import Watch from "./Watch";
 import {
   colorWhite,
-  lightestGrey,
   lightGrey,
   primaryColor,
   secondaryColor,
 } from "../Variables";
 import { StarOutline } from "react-ionicons";
+import ListHeader from "./ListHeader";
 
 const WatchList = () => {
   const theme = useSelector((state) => state.theme);
@@ -22,14 +22,7 @@ const WatchList = () => {
           <span>
             watchlist <StarOutline width="2rem" height="2rem" />
           </span>
-          <StyledHeader className={theme ? "dark" : null}>
-            <div className="items">Coin</div>
-            <div className="items">USD ($)</div>
-            <div className="items">GBP (&pound;)</div>
-            <div className="items">GHS (&cent;)</div>
-            <div className="items">EUR (&euro;)</div>
-            <div className="items">NGN (&#8358;)</div>
-          </StyledHeader>
+          <ListHeader />
         </StyledTitle>
         <StyledList className={theme ? "dark" : null}>
           {["bitcoin", "ethereum", "stellar", "bitcoin cash", "litecoin"].map(
@@ -89,25 +82,6 @@ const StyledTitle = styled.div`
         fill: ${colorWhite};
       }
     }
-  }
-`;
-
-const StyledHeader = styled.div`
-  flex: 1;
-  width: 100%;
-  height: 100%;
-  display: grid;
-  grid-template-columns: 1.5fr repeat(5, 1fr);
-  font-size: 1.5rem;
-  color: ${lightGrey};
-
-  .items {
-    width: 100%;
-    height: 100%;
-  }
-
-  &.dark {
-    color: ${lightestGrey};
   }
 `;
 
