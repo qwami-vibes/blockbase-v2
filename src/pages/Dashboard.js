@@ -7,7 +7,7 @@ import Aside from "../components/Aside";
 import Nav from "../components/Nav";
 import AccountBrief from "../components/AccountBrief";
 
-import { getCoins } from "../api/api";
+import { getListApi } from "../api/api";
 
 import WatchList from "../components/WatchList";
 import Wallet from "../components/Wallet";
@@ -20,7 +20,7 @@ const Dashboard = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getCoins());
+    dispatch(getListApi(dispatch));
   }, [dispatch]);
 
   return (
@@ -30,9 +30,9 @@ const Dashboard = () => {
       <AccountBrief />
       <Switch>
         <Route path="/dashboard" exact component={WatchList} />
-        <Route path="/transactions" component={Transactions} />
-        <Route path="/trends" component={Trends} />
-        <Route path="/wallet" component={Wallet} />
+        <Route path="/dashboard/trends" component={Trends} />
+        <Route path="/dashboard/transactions" component={Transactions} />
+        <Route path="/dashboard/wallet" component={Wallet} />
       </Switch>
     </StyledDashboard>
   );

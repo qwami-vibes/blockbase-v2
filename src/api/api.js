@@ -1,29 +1,58 @@
 import axios from "axios";
+
 import {
   fetchCoinsFailure,
   fetchCoinsPending,
   fetchCoinsSuccess,
+  fetchCoinsPricesFailure,
+  fetchCoinsPricesPending,
+  fetchCoinsPricesSuccess,
 } from "../actions";
 
-const baseUrl = "https://coinranking1.p.rapidapi.com";
+let coinList = [];
 
-export const getCoins = () => (dispatch) => {
+export const getListApi = () => async (dispatch) => {
+  const baseUrl = "https://coinranking1.p.rapidapi.com";
   dispatch(fetchCoinsPending());
 
-  axios({
-    method: "GET",
-    url: `${baseUrl}/coins`,
-    headers: {
-      "x-rapidapi-key": process.env.REACT_APP_API_KEY,
-      "x-rapidapi-host": process.env.REACT_APP_API_HOST,
-    },
-  })
-    .then((data) => {
-      console.log(data);
-      dispatch(fetchCoinsSuccess(data.data));
-    })
-    .catch((err) => {
-      dispatch(fetchCoinsFailure(err));
-      console.log(err);
+  try {
+    const res = await axios({
+      method: "GET",
+      url: `${baseUrl}/coins`,
+      headers: {
+        "x-rapidapi-key": process.env.REACT_APP_COINRANKING_API_KEY,
+        "x-rapidapi-host": "coinranking1.p.rapidapi.com",
+      },
     });
+
+    res.data.data.coins.forEach((coin) => coinList.push(coin.symbol));
+    dispatch(fetchCoinsSuccess(res.data.data));
+    dispatch(getCoins());
+  } catch (err) {
+    dispatch(fetchCoinsFailure(err));
+    // alert(err);
+  }
+};
+
+const getCoins = () => async (dispatch) => {
+  const baseUrl = "https://min-api.cryptocompare.com/data";
+  const currencies = "USD,GBP,GHS,EUR,NGN";
+
+  const coins = coinList.slice(0, 60).join(",");
+
+  const apikey = process.env.REACT_APP_CRYPTOCOMPARE_API_KEY;
+
+  dispatch(fetchCoinsPricesPending());
+
+  try {
+    const res = await axios({
+      method: "GET",
+      url: `${baseUrl}/pricemulti`,
+      params: { api_key: apikey, fsyms: coins, tsyms: currencies },
+    });
+    dispatch(fetchCoinsPricesSuccess(res.data));
+  } catch (error) {
+    dispatch(fetchCoinsPricesFailure(error));
+    console.log(error);
+  }
 };

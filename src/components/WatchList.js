@@ -25,11 +25,11 @@ const WatchList = () => {
           <ListHeader />
         </StyledTitle>
         <StyledList className={theme ? "dark" : null}>
-          {["bitcoin", "ethereum", "stellar", "bitcoin cash", "litecoin"].map(
+          {/* {["bitcoin", "ethereum", "stellar", "bitcoin cash", "litecoin"].map(
             (list) => (
               <Watch currency={list} />
             )
-          )}
+          )} */}
         </StyledList>
       </StyledContainer>
     </StyledWatchlist>

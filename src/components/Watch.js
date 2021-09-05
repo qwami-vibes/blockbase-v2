@@ -1,18 +1,41 @@
 import React from "react";
 import styled from "styled-components";
+import { useSelector } from "react-redux";
 
-const Watch = ({ currency }) => {
+import { colorWhite, grey } from "../Variables";
+import {
+  dollarConvert,
+  euroConvert,
+  poundConvert,
+  cedisConvert,
+  nairaConvert,
+} from "./Convertors";
+
+const Watch = ({ name, id, symbol, price, color, icon }) => {
+  const theme = useSelector((state) => state.theme);
+  const coinsPrices = useSelector((state) => state.coinsPrices);
+
   return (
-    <StyledWatch>
+    <StyledWatch color={color || (theme ? colorWhite : grey)}>
       <div className="crypto-list crypto-name">
-        <img src="google.com" alt="Crypto Logo" />
-        <span>{currency}</span>
+        <img src={icon} alt="Crypto Logo" />
+        <span>{name}</span>
       </div>
-      <div className="crypto-list crypto-usd">25,000</div>
-      <div className="crypto-list crypto-gbp">45,000</div>
-      <div className="crypto-list crypto-ghs">606,504</div>
-      <div className="crypto-list crypto-eur">434,344</div>
-      <div className="crypto-list crypto-ngn">43,344,434</div>
+      <div className="crypto-list crypto-usd">
+        {coinsPrices[symbol] ? dollarConvert(coinsPrices[symbol].USD) : "-"}
+      </div>
+      <div className="crypto-list crypto-gbp">
+        {coinsPrices[symbol] ? poundConvert(coinsPrices[symbol].GBP) : "-"}
+      </div>
+      <div className="crypto-list crypto-ghs">
+        {coinsPrices[symbol] ? cedisConvert(coinsPrices[symbol].GHS) : "-"}
+      </div>
+      <div className="crypto-list crypto-eur">
+        {coinsPrices[symbol] ? euroConvert(coinsPrices[symbol].EUR) : "-"}
+      </div>
+      <div className="crypto-list crypto-ngn">
+        {coinsPrices[symbol] ? nairaConvert(coinsPrices[symbol].NGN) : "-"}
+      </div>
     </StyledWatch>
   );
 };
@@ -22,6 +45,11 @@ const StyledWatch = styled.div`
   grid-template-columns: 1.5fr repeat(5, 1fr);
   font-size: 1.5rem;
   width: 100%;
+  background: ${(props) => props.color};
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: text;
 
   .crypto {
     &-list {
