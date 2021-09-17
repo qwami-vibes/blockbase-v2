@@ -4,7 +4,10 @@ export const bgColor = "#FBC02D";
 export const accentColor = "#128CE5";
 
 export const colorWhite = "#fff";
-export const successColor = "#3EDE4E";
+export const successColor = "#5cb85c";
+export const dangerColor = "#d9534f";
+export const warningColor = "#f0ad4e";
+export const infoColor = "#5bc0de";
 
 export const grey = "#333";
 export const greyDarker = "#444";

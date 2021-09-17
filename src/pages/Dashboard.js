@@ -14,9 +14,11 @@ import Wallet from "../components/Wallet";
 import Transactions from "../components/Transactions";
 import Trends from "../components/Trends";
 import { colorWhite, greyDarker } from "../Variables";
+import Alerts from "../components/Alerts";
 
 const Dashboard = () => {
   const theme = useSelector((state) => state.theme);
+  const alert = useSelector((state) => state.alert);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -25,6 +27,7 @@ const Dashboard = () => {
 
   return (
     <StyledDashboard className={theme ? "dark" : null}>
+      {alert.visble && <Alerts />}
       <Aside />
       <Nav />
       <AccountBrief />

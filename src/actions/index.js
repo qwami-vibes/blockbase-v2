@@ -1,7 +1,8 @@
 const SET_THEME = "SET_THEME";
-const SET_USER_SUCCESS = "SET_USER_SUCCESS";
-const SET_USER_FAILURE = "SET_USER_FAILURE";
-const SET_USER_PENDING = "SET_USER_PENDING";
+const SET_USER = "SET_USER";
+const RESET_USER = "RESET_USER";
+const SET_ALERT = "SET_ALERT";
+const RESET_ALERT = "RESET_ALERT";
 const FETCH_COINS_SUCCESS = "FETCH_COINS_SUCCESS";
 const FETCH_COINS_PENDING = "FETCH_COINS_PENDING";
 const FETCH_COINS_FAILURE = "FETCH_COINS_FAILURE";
@@ -9,23 +10,29 @@ const FETCH_COINS_PRICES_SUCCESS = "FETCH_COINS_PRICES_SUCCESS";
 const FETCH_COINS_PRICES_PENDING = "FETCH_COINS_PRICES_PENDING";
 const FETCH_COINS_PRICES_FAILURE = "FETCH_COINS_PRICES_FAILURE";
 
-export const setUserSuccess = (user) => {
+export const setUser = (user) => {
   return {
-    type: SET_USER_SUCCESS,
+    type: SET_USER,
     payload: user,
   };
 };
 
-export const setUserPending = () => {
+export const resetUser = () => {
   return {
-    type: SET_USER_PENDING,
+    type: RESET_USER,
   };
 };
 
-export const setUserFailure = (err) => {
+export const setAlert = (alert) => {
   return {
-    type: SET_USER_FAILURE,
-    payload: err,
+    type: SET_ALERT,
+    payload: alert,
+  };
+};
+
+export const resetAlert = () => {
+  return {
+    type: RESET_ALERT,
   };
 };
 

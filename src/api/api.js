@@ -9,6 +9,8 @@ import {
   fetchCoinsPricesSuccess,
 } from "../actions";
 
+import { auth } from "../config/firebase";
+
 let coinList = [];
 
 export const getListApi = () => async (dispatch) => {
@@ -55,4 +57,16 @@ const getCoins = () => async (dispatch) => {
     dispatch(fetchCoinsPricesFailure(error));
     console.log(error);
   }
+};
+
+export const signupUser = async (email, password) => {
+  return await auth.createUserWithEmailAndPassword(email, password);
+};
+
+export const signinUser = async (email, password) => {
+  return await auth.signInWithEmailAndPassword(email, password);
+};
+
+export const signoutUser = async () => {
+  return await auth.signOut();
 };

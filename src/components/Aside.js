@@ -2,10 +2,14 @@ import React from "react";
 import styled from "styled-components";
 import { useLocation } from "react-router";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { useHistory } from "react-router";
+
+import { signoutUser } from "../api/api";
 
 import logoSmall from "../assets/blockbase-small.png";
 import ProfilePic from "../assets/background-image.png";
+
 import {
   WalletOutline,
   LogOutOutline,
@@ -13,6 +17,7 @@ import {
   TrendingUpOutline,
   SwapHorizontalOutline,
 } from "react-ionicons";
+
 import {
   colorWhite,
   grey,
@@ -20,10 +25,29 @@ import {
   primaryColor,
   secondaryColor,
 } from "../Variables";
+import { resetUser } from "../actions";
 
 const Aside = () => {
   const location = useLocation();
+  const history = useHistory();
+  const dispatch = useDispatch();
   const theme = useSelector((state) => state.theme);
+
+  const handleLogout = async (e) => {
+    //* prevent form from reloading
+    e.preventDefault();
+
+    //* sign out user function added and called fron api
+    signoutUser()
+      .then(() => {
+        //* reset current user in state
+        dispatch(resetUser());
+
+        //* send user to login page
+        history.push("/");
+      })
+      .catch((err) => console.log(err));
+  };
 
   return (
     <StyledAside className={theme ? "dark" : null}>
@@ -71,7 +95,11 @@ const Aside = () => {
       </StyledProfile>
       <StyledLinks>
         <StyledLink className={theme ? "dark" : null}>
-          <LogOutOutline width="3rem" height="3rem" />
+          <form onSubmit={handleLogout}>
+            <button type="submit">
+              <LogOutOutline width="3rem" height="3rem" />
+            </button>
+          </form>
         </StyledLink>
       </StyledLinks>
     </StyledAside>
@@ -115,6 +143,12 @@ const StyledLink = styled(StyledFlex)`
   padding: 1.5rem;
   border-radius: 50%;
   transition: all 0.5s ease-in;
+
+  form {
+    button {
+      cursor: pointer;
+    }
+  }
 
   &.dark,
   a.dark {
