@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 
-// import Watch from "./Watch";
+import Watch from "./Watch";
 import {
   colorWhite,
   lightGrey,
@@ -25,11 +25,11 @@ const WatchList = () => {
           <ListHeader />
         </StyledTitle>
         <StyledList className={theme ? "dark" : null}>
-          {/* {["bitcoin", "ethereum", "stellar", "bitcoin cash", "litecoin"].map(
+          {["bitcoin", "ethereum", "stellar", "bitcoin cash", "litecoin"].map(
             (list) => (
               <Watch currency={list} />
             )
-          )} */}
+          )}
         </StyledList>
       </StyledContainer>
     </StyledWatchlist>

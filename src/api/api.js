@@ -10,6 +10,7 @@ import {
 } from "../actions";
 
 import { auth } from "../config/firebase";
+import { collection, getDocs, addDoc } from "firebase/firestore/lite";
 
 let coinList = [];
 
@@ -32,7 +33,6 @@ export const getListApi = () => async (dispatch) => {
     dispatch(getCoins());
   } catch (err) {
     dispatch(fetchCoinsFailure(err));
-    // alert(err);
   }
 };
 
@@ -73,4 +73,14 @@ export const signoutUser = async () => {
 
 export const currentUser = () => {
   return auth.currentUser;
+};
+
+export const getCollection = async (db, collectionName) => {
+  return await getDocs(collection(db, collectionName)).citySnapshot.docs.map(
+    (doc) => doc.data()
+  );
+};
+
+export const addDocument = async (db, collectionName, addItem) => {
+  return await addDoc(collection(db, collectionName), addItem);
 };
