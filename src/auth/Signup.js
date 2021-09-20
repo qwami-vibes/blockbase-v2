@@ -1,27 +1,28 @@
 import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
-import { useHistory } from "react-router";
 
 import { setAlert } from "../actions";
+import ErrorHandlers from "../components/ErrorHandlers";
 
-import { signupUser, signoutUser } from "../api/api";
+import { signupUser } from "../api/api";
 
 import logoLarge from "../assets/blockbase-large.png";
 import { accentColor, colorWhite, lightGrey, successColor } from "../Variables";
 
 const Signin = ({ authType, setAuthType }) => {
   const dispatch = useDispatch();
-  const history = useHistory();
 
   const [pending, setPending] = useState(false);
 
   const emailValue = useRef();
   const passwordValue = useRef();
+  const confirmPasswordValue = useRef();
 
   const submitHandler = (e) => {
     const password = passwordValue.current.value;
     const email = emailValue.current.value;
+    const confirmPassword = confirmPasswordValue.current.value;
 
     //* Prevent form from reloading the page
     e.preventDefault();
@@ -32,55 +33,56 @@ const Signin = ({ authType, setAuthType }) => {
     if (password.length <= 6) {
       setPending(false);
 
-      return dispatch(
+      dispatch(
         setAlert({
           message: "Password too short. Should be more than 6 characters",
           type: "warning",
         })
       );
+    } else if (password !== confirmPassword) {
+      setPending(false);
+
+      dispatch(
+        setAlert({
+          message: "Passwords do not match. Try again",
+          type: "warning",
+        })
+      );
+    } else {
+      setPending(false);
+
+      //* fires promise funciton to create account
+      signupUser(email, password)
+        .then((user) => {
+          // * sigin out user after the verification code has ben sent
+          // signoutUser()
+          //   .then()
+          //   .catch((err) => {
+          //     <ErrorHandlers code={err.code} />;
+          //   });
+
+          //* shows alert to user that the account was created successfully
+          dispatch(
+            setAlert({
+              message:
+                "Successfully created account. Please verify email to continue",
+              type: "success",
+            })
+          );
+
+          //* Switch component to login page
+          setAuthType(!authType);
+        })
+        .catch((err) => {
+          console.log(err.code);
+
+          //* Error handler functions
+          ErrorHandlers(dispatch, err.code);
+
+          //* remove disabled from button
+          setPending(false);
+        });
     }
-
-    //* fires promise funciton to create account
-    signupUser(email, password)
-      .then(() => {
-        //* shows alert to user that the account was created successfully
-        dispatch(
-          setAlert({
-            message: "Successfully created account",
-            type: "success",
-          })
-        );
-
-        //* After the user is created, logging out the user follows
-        signoutUser()
-          .then(() => {
-            //* We ask the user to sign in with credential to continue
-            dispatch(
-              setAlert({
-                message: "Please login to continue",
-                type: "info",
-              })
-            );
-          })
-          .catch((err) => console.log(err));
-
-        //* then we push the user to the login page after 3.5 seconds
-        setAuthType(!authType);
-      })
-      .catch((err) => {
-        console.log(err);
-
-        //* shows alert to user indicating failure in account creation
-        dispatch(
-          setAlert({
-            message: "Failed to create account. Try Again!",
-            type: "danger",
-          })
-        );
-
-        //* remove disabled from button
-        setPending(false);
-      });
   };
 
   return (
@@ -114,6 +116,17 @@ const Signin = ({ authType, setAuthType }) => {
           required
         />
         <label htmlFor="password">Password</label>
+      </StyledInput>
+      <StyledInput>
+        <input
+          ref={confirmPasswordValue}
+          type="password"
+          name="confirm-password"
+          id="confirm-password"
+          placeholder="Confirm Password"
+          required
+        />
+        <label htmlFor="password">Confirm Password</label>
       </StyledInput>
       <StyledSubmit>
         <button type="submit" disabled={pending}>

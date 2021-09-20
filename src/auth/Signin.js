@@ -1,9 +1,7 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
-
-import { auth } from "../config/firebase";
 
 import { signinUser } from "../api/api";
 
@@ -15,6 +13,7 @@ import logoLarge from "../assets/blockbase-large.png";
 import topLeftSvg from "../assets/svg/top-left.svg";
 import bottomRightSvg from "../assets/svg/bottom-right.svg";
 import blockBaseImg from "../assets/blockbase-image.jpg";
+
 import {
   accentColor,
   colorWhite,
@@ -23,6 +22,7 @@ import {
   bgColor,
 } from "../Variables";
 import { setAlert, setUser } from "../actions";
+import ErrorHandlers from "../components/ErrorHandlers";
 
 const Signin = () => {
   const dispatch = useDispatch();
@@ -72,50 +72,15 @@ const Signin = () => {
         );
       })
       .catch((err) => {
-        console.log(err);
-
-        dispatch(
-          setAlert({
-            message: "User not found. Invalid email and password",
-            type: "danger",
-          })
-        );
-
         //* remove disabled from button
         setPending(false);
+
+        console.log(err.code);
+
+        //* Error handler for the error actions
+        ErrorHandlers(dispatch, err.code);
       });
   };
-
-  useEffect(() => {
-    auth.onAuthStateChanged((user) => {
-      //* check if user is logged in or not
-      //* if user is null = not logged in so do nothing
-      if (user === null) {
-        return null;
-      }
-
-      //* else user is logged in, then create current user state
-      const data = {
-        user: user.providerData[0],
-        id: user.uid,
-      };
-
-      //* send current user state to state manager
-      dispatch(setUser(data));
-
-      setTimeout(() => {
-        history.push("/dashboard");
-      }, 3500);
-
-      //* alert user for being logged in successfully
-      dispatch(
-        setAlert({
-          message: "Session not expired. Logging in",
-          type: "success",
-        })
-      );
-    });
-  }, [dispatch, history]);
 
   return (
     <StyledSignup>

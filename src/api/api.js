@@ -70,3 +70,7 @@ export const signinUser = async (email, password) => {
 export const signoutUser = async () => {
   return await auth.signOut();
 };
+
+export const currentUser = () => {
+  return auth.currentUser;
+};
