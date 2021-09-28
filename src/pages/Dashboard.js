@@ -10,7 +10,7 @@ import Aside from "../components/Aside";
 import Nav from "../components/Nav";
 import AccountBrief from "../components/AccountBrief";
 
-import { getListApi } from "../api/api";
+import { getCollection, getListApi } from "../api/api";
 
 import WatchList from "../components/WatchList";
 import Wallet from "../components/Wallet";
@@ -49,12 +49,14 @@ const Dashboard = () => {
         id: user.uid,
       };
 
+      getCollection("users")
+        .then((data) => {
+          data.forEach((doc) => console.log(doc.data()));
+        })
+        .catch((err) => console.log(err.code));
+
       //* send current user state to state manager
       dispatch(setUser(data));
-
-      //* redirect user to the dashboard page in 3.5s after the alert popup
-
-      //* alert user for being logged in successfully
     });
   }, [dispatch, history]);
 

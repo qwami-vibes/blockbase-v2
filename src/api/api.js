@@ -1,5 +1,8 @@
 import axios from "axios";
 
+import { db } from "../config/firebase";
+import { collection, getDocs } from "firebase/firestore/lite";
+
 import {
   fetchCoinsFailure,
   fetchCoinsPending,
@@ -10,7 +13,6 @@ import {
 } from "../actions";
 
 import { auth } from "../config/firebase";
-import { collection, getDocs, addDoc } from "firebase/firestore/lite";
 
 let coinList = [];
 
@@ -75,12 +77,8 @@ export const currentUser = () => {
   return auth.currentUser;
 };
 
-export const getCollection = async (db, collectionName) => {
-  return await getDocs(collection(db, collectionName)).citySnapshot.docs.map(
-    (doc) => doc.data()
-  );
+export const getCollection = async (collectionName) => {
+  return await getDocs(collection(db, collectionName));
 };
 
-export const addDocument = async (db, collectionName, addItem) => {
-  return await addDoc(collection(db, collectionName), addItem);
-};
+export const addCollection = async (collectionName) => {};

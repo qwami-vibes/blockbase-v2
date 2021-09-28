@@ -15,7 +15,3 @@ const app = firebase.initializeApp({
 export const auth = app.auth();
 
 export const db = getFirestore(app);
-
-// getCities(db)
-//   .then((data) => console.log(data))
-//   .catch((err) => err.message);

@@ -42,7 +42,7 @@ function App() {
               .catch((err) => ErrorHandlers(dispatch, err.code));
           })
           .catch((err) => {
-            ErrorHandlers(err.code);
+            ErrorHandlers(dispatch, err.code);
           });
       }
 
