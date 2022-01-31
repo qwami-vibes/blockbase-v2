@@ -4,13 +4,14 @@ import { Route, Routes as Switch, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
 import { auth } from "../../config/firebase";
+// import { getCollection, getListApi } from "../../api/api";
+import { everyCoin } from "../../api/api";
 
 import Aside from "./components/Aside";
 import Nav from "./components/Nav";
 import AccountBrief from "./components/AccountBrief";
 import Onboarding from "./components/Onboarding";
 
-import { getCollection, getListApi } from "../../api/api";
 import { colorWhite, greyDarker } from "../../helpers/Variables";
 import { setAlert, setUser } from "../../redux/actions";
 
@@ -28,7 +29,7 @@ const Dashboard = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    dispatch(getListApi(dispatch));
+    dispatch(everyCoin());
 
     auth.onAuthStateChanged((user) => {
       //* check if user is logged in or not in firebase
@@ -50,11 +51,11 @@ const Dashboard = () => {
         id: user.uid,
       };
 
-      getCollection("users")
-        .then((data) => {
-          data.forEach((doc) => console.log(doc.data()));
-        })
-        .catch((err) => console.log(err.code));
+      // getCollection("users")
+      //   .then((data) => {
+      //     data.forEach((doc) => console.log(doc.data()));
+      //   })
+      //   .catch((err) => console.log(err.code));
 
       //* send current user state to state manager
       dispatch(setUser(data));
@@ -68,7 +69,7 @@ const Dashboard = () => {
       <Nav />
       <AccountBrief />
       <Switch>
-        <Route path="/" exact element={<WatchList />} />
+        <Route path="watch" exact element={<WatchList />} />
         <Route path="trends" element={<Trends />} />
         <Route path="transactions" element={<Transactions />} />
         <Route path="wallet" element={<Wallet />} />

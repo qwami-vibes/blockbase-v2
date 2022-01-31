@@ -42,10 +42,10 @@ const AccountBrief = () => {
           <div className="header-title">transactions</div>
           <div className="controls">
             <button className="controls-back">
-              <FeatherIcons icon="cheveron-left" />
+              <FeatherIcons icon="chevron-left" />
             </button>
             <button className="controls-forward">
-              <FeatherIcons icon="cheveron-right" />
+              <FeatherIcons icon="chevron-right" />
             </button>
           </div>
         </div>

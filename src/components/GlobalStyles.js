@@ -1,4 +1,5 @@
 import { createGlobalStyle } from "styled-components";
+import { lightGrey } from "../helpers/Variables";
 
 const GlobalStyles = createGlobalStyle`
 
@@ -31,6 +32,10 @@ input, button {
 button {
     background: transparent;
     border: 0;
+}
+
+svg {
+    color: ${lightGrey}
 }
 
 `;

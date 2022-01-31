@@ -14,6 +14,7 @@ import {
   colorWhite,
   grey,
   lighterGrey,
+  lightGrey,
   primaryColor,
   secondaryColor,
 } from "../../../helpers/Variables";
@@ -48,8 +49,8 @@ const Aside = () => {
         <img src={logoSmall} alt="Blockbase Logo" />
       </StyledLogo>
       <StyledLinks>
-        <StyledLink className={pathname === "/" ? "active" : null}>
-          <Link className={theme ? "dark" : null} to="/">
+        <StyledLink className={pathname === "/watch" ? "active" : null}>
+          <Link className={theme ? "dark" : null} to="/watch">
             <FeatherIcons icon="grid" />
           </Link>
         </StyledLink>
@@ -122,6 +123,15 @@ const StyledLink = styled(StyledFlex)`
   padding: 1.5rem;
   border-radius: 50%;
   transition: all 0.5s ease-in;
+
+  a {
+    width: 24px;
+    height: 24px;
+  }
+
+  svg {
+    color: ${lightGrey};
+  }
 
   form {
     button {

@@ -61,7 +61,7 @@ const Signin = () => {
 
         //* log user in by sending user to dashboard page
         setTimeout(() => {
-          navigate("/");
+          navigate("/watch");
         }, 3500);
 
         //* alert user on login

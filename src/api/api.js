@@ -7,7 +7,7 @@ import { collection, getDocs } from "firebase/firestore/lite";
 import {
   fetchCoinsFailure,
   fetchCoinsPending,
-  fetchCoinsSuccess,
+  // fetchCoinsSuccess,
   fetchCoinsPricesFailure,
   fetchCoinsPricesPending,
   fetchCoinsPricesSuccess,
@@ -15,8 +15,8 @@ import {
 
 let coinList = [];
 
-export const getListApi = () => async (dispatch) => {
-  const baseUrl = "https://coinranking1.p.rapidapi.com";
+export const everyCoin = () => async (dispatch) => {
+  const baseUrl = "https://api.coinranking.com/v2";
   dispatch(fetchCoinsPending());
 
   try {
@@ -24,20 +24,20 @@ export const getListApi = () => async (dispatch) => {
       method: "GET",
       url: `${baseUrl}/coins`,
       headers: {
-        "x-rapidapi-key": process.env.REACT_APP_COINRANKING_API_KEY,
-        "x-rapidapi-host": "coinranking1.p.rapidapi.com",
+        "x-access-token": process.env.REACT_APP_COINRANKING_ORIGINAL_KEY,
       },
     });
 
-    res.data.data.coins.forEach((coin) => coinList.push(coin.symbol));
-    dispatch(fetchCoinsSuccess(res.data.data));
-    dispatch(getCoins());
+    console.log(res.data);
+    // res.data.data.coins.forEach((coin) => coinList.push(coin.symbol));
+    // dispatch(fetchCoinsSuccess(res.data.data));
+    // dispatch(getCoins());
   } catch (err) {
     dispatch(fetchCoinsFailure(err));
   }
 };
 
-const getCoins = () => async (dispatch) => {
+export const getCoins = () => async (dispatch) => {
   const baseUrl = "https://min-api.cryptocompare.com/data";
   const currencies = "USD,GBP,GHS,EUR,NGN";
 
