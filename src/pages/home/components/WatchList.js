@@ -8,8 +8,8 @@ import {
   lightGrey,
   primaryColor,
   secondaryColor,
-} from "../Variables";
-import { StarOutline } from "react-ionicons";
+} from "../../../helpers/Variables";
+import FeatherIcons from "feather-icons-react";
 import ListHeader from "./ListHeader";
 
 const WatchList = () => {
@@ -20,7 +20,7 @@ const WatchList = () => {
       <StyledContainer>
         <StyledTitle className={theme ? "dark" : null}>
           <span>
-            watchlist <StarOutline width="2rem" height="2rem" />
+            watchlist <FeatherIcons icon="star" />
           </span>
           <ListHeader />
         </StyledTitle>

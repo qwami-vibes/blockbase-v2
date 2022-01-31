@@ -7,8 +7,8 @@ import {
   infoColor,
   successColor,
   warningColor,
-} from "../Variables";
-import { resetAlert } from "../actions";
+} from "../helpers/Variables";
+import { resetAlert } from "../redux/actions";
 
 const Alert = ({ message, type }) => {
   const dispatch = useDispatch();

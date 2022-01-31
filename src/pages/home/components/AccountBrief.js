@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 
-import ProfilePic from "../assets/background-image.png";
+import ProfilePic from "../../../assets/background-image.png";
 
 import TransInfo from "./TransInfo";
 
@@ -14,8 +14,8 @@ import {
   lightestGrey,
   primaryColor,
   secondaryColor,
-} from "../Variables";
-import { ChevronForwardOutline, ChevronBackOutline } from "react-ionicons";
+} from "../../../helpers/Variables";
+import FeatherIcons from "feather-icons-react";
 
 const AccountBrief = () => {
   const theme = useSelector((state) => state.theme);
@@ -42,10 +42,10 @@ const AccountBrief = () => {
           <div className="header-title">transactions</div>
           <div className="controls">
             <button className="controls-back">
-              <ChevronBackOutline width="2.5rem" height="2.5rem" />
+              <FeatherIcons icon="cheveron-left" />
             </button>
             <button className="controls-forward">
-              <ChevronForwardOutline width="2.5rem" height="2.5rem" />
+              <FeatherIcons icon="cheveron-right" />
             </button>
           </div>
         </div>

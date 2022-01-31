@@ -1,6 +1,10 @@
 import React from "react";
 import styled from "styled-components";
-import { lightGrey, primaryColor, secondaryColor } from "../Variables";
+import {
+  lightGrey,
+  primaryColor,
+  secondaryColor,
+} from "../../../helpers/Variables";
 import { useSelector } from "react-redux";
 
 import ListHeader from "./ListHeader";

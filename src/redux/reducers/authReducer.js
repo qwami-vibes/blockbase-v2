@@ -5,9 +5,10 @@ const initState = {
 };
 
 const authReducer = (state = initState, action) => {
-  switch (action.key) {
+  switch (action.type) {
     case "SET_USER":
       return {
+        ...state,
         isLoggedIn: true,
         user: action.payload.user,
         userId: action.payload.id,

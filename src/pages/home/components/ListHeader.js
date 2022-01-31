@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { lightestGrey, lightGrey } from "../Variables";
+import { lightestGrey, lightGrey } from "../../../helpers/Variables";
 import { useSelector } from "react-redux";
 
 const ListHeader = () => {

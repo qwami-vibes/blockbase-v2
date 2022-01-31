@@ -1,4 +1,4 @@
-import { setAlert } from "../actions";
+import { setAlert } from "../redux/actions";
 
 const ErrorHandlers = (dispatch, code) => {
   switch (code) {

@@ -1,18 +1,21 @@
 import React, { useState, useRef } from "react";
 import styled from "styled-components";
-import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router";
 
-import { signinUser } from "../api/api";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+
+import { signinUser } from "../../api/api";
+import { setAlert, setUser } from "../../redux/actions";
 
 import Signup from "./Signup";
-import Alerts from "../components/Alerts";
+import Alerts from "../../components/Alerts";
+import ErrorHandlers from "../../components/ErrorHandlers";
 
-import logoLarge from "../assets/blockbase-large.png";
-
-import topLeftSvg from "../assets/svg/top-left.svg";
-import bottomRightSvg from "../assets/svg/bottom-right.svg";
-import blockBaseImg from "../assets/blockbase-image.jpg";
+import { device } from "../../helpers/Mediaqueries";
+import logoLarge from "../../assets/blockbase-large.png";
+import topLeftSvg from "../../assets/svg/top-left.svg";
+import bottomRightSvg from "../../assets/svg/bottom-right.svg";
+import blockBaseImg from "../../assets/blockbase-image.jpg";
 
 import {
   accentColor,
@@ -20,13 +23,11 @@ import {
   lightGrey,
   successColor,
   bgColor,
-} from "../Variables";
-import { setAlert, setUser } from "../actions";
-import ErrorHandlers from "../components/ErrorHandlers";
+} from "../../helpers/Variables";
 
 const Signin = () => {
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const alert = useSelector((state) => state.alert);
 
@@ -60,7 +61,7 @@ const Signin = () => {
 
         //* log user in by sending user to dashboard page
         setTimeout(() => {
-          history.push("/dashboard");
+          navigate("/");
         }, 3500);
 
         //* alert user on login
@@ -84,7 +85,7 @@ const Signin = () => {
 
   return (
     <StyledSignup>
-      {alert.visible && <Alerts></Alerts>}
+      {alert.visible && <Alerts />}
       <StyledContainer>
         <img src={topLeftSvg} className="svg-left" alt="background-svg" />
         <img src={bottomRightSvg} className="svg-right" alt="background-svg" />
@@ -165,6 +166,10 @@ const StyledContainer = styled.div`
   overflow: hidden;
   position: relative;
 
+  @media screen and (${device.desktop}) {
+    max-width: 125rem;
+  }
+
   & img {
     width: 30rem;
     position: fixed;
@@ -173,6 +178,10 @@ const StyledContainer = styled.div`
       right: 0;
       bottom: 0;
       transform: translate(-90%, -35px);
+
+      @media screen and (${device.desktop}) {
+        transform: translate(-110%, -15%);
+      }
     }
   }
 `;
@@ -192,15 +201,26 @@ const StyledContainerAuth = styled.div`
   flex: 0 0 50%;
   height: 80%;
   margin: auto 0;
+
+  @media screen and (${device.desktop}) {
+    flex: 0 0 40%;
+  }
 `;
 
 const StyledContainerImage = styled.div`
   flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   img {
     width: 45%;
     height: 100%;
     object-fit: cover;
+
+    @media screen and (${device.desktop}) {
+      width: 50%;
+    }
   }
 `;
 

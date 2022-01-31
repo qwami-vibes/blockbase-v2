@@ -1,22 +1,14 @@
 import React from "react";
 import styled from "styled-components";
-import { useLocation } from "react-router";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { useHistory } from "react-router";
+import { useNavigate } from "react-router-dom";
 
-import { signoutUser } from "../api/api";
+import { signoutUser } from "../../../api/api";
 
-import logoSmall from "../assets/blockbase-small.png";
-import ProfilePic from "../assets/background-image.png";
-
-import {
-  WalletOutline,
-  LogOutOutline,
-  GridOutline,
-  TrendingUpOutline,
-  SwapHorizontalOutline,
-} from "react-ionicons";
+import logoSmall from "../../../assets/blockbase-small.png";
+import ProfilePic from "../../../assets/background-image.png";
+import FeatherIcons from "feather-icons-react";
 
 import {
   colorWhite,
@@ -24,14 +16,15 @@ import {
   lighterGrey,
   primaryColor,
   secondaryColor,
-} from "../Variables";
-import { resetUser } from "../actions";
+} from "../../../helpers/Variables";
+import { resetUser } from "../../../redux/actions";
 
 const Aside = () => {
-  const location = useLocation();
-  const history = useHistory();
-  const dispatch = useDispatch();
   const theme = useSelector((state) => state.theme);
+  const { pathname } = useLocation();
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleLogout = async (e) => {
     //* prevent form from reloading
@@ -44,7 +37,7 @@ const Aside = () => {
         dispatch(resetUser());
 
         //* send user to login page
-        history.push("/");
+        navigate("login");
       })
       .catch((err) => console.log(err));
   };
@@ -55,38 +48,24 @@ const Aside = () => {
         <img src={logoSmall} alt="Blockbase Logo" />
       </StyledLogo>
       <StyledLinks>
-        <StyledLink
-          className={location.pathname === "/dashboard" ? "active" : null}
-        >
-          <Link className={theme ? "dark" : null} to="/dashboard">
-            <GridOutline width="3rem" height="3rem" />
+        <StyledLink className={pathname === "/" ? "active" : null}>
+          <Link className={theme ? "dark" : null} to="/">
+            <FeatherIcons icon="grid" />
           </Link>
         </StyledLink>
-        <StyledLink
-          className={
-            location.pathname === "/dashboard/trends" ? "active" : null
-          }
-        >
-          <Link className={theme ? "dark" : null} to="/dashboard/trends">
-            <TrendingUpOutline width="3rem" height="3rem" />
+        <StyledLink className={pathname === "/trends" ? "active" : null}>
+          <Link className={theme ? "dark" : null} to="trends">
+            <FeatherIcons icon="trending-up" />
           </Link>
         </StyledLink>
-        <StyledLink
-          className={
-            location.pathname === "/dashboard/transactions" ? "active" : null
-          }
-        >
-          <Link className={theme ? "dark" : null} to="/dashboard/transactions">
-            <SwapHorizontalOutline width="3rem" height="3rem" />
+        <StyledLink className={pathname === "/transactions" ? "active" : null}>
+          <Link className={theme ? "dark" : null} to="transactions">
+            <FeatherIcons icon="repeat" />
           </Link>
         </StyledLink>
-        <StyledLink
-          className={
-            location.pathname === "/dashboard/wallet" ? "active" : null
-          }
-        >
-          <Link className={theme ? "dark" : null} to="/dashboard/wallet">
-            <WalletOutline width="3rem" height="3rem" />
+        <StyledLink className={pathname === "/wallet" ? "active" : null}>
+          <Link className={theme ? "dark" : null} to="wallet">
+            <FeatherIcons icon="credit-card" />
           </Link>
         </StyledLink>
       </StyledLinks>
@@ -97,7 +76,7 @@ const Aside = () => {
         <StyledLink className={theme ? "dark" : null}>
           <form onSubmit={handleLogout}>
             <button type="submit">
-              <LogOutOutline width="3rem" height="3rem" />
+              <FeatherIcons icon="log-out" />
             </button>
           </form>
         </StyledLink>

@@ -2,11 +2,11 @@ import React from "react";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 
-import ProfilePic from "../assets/background-image.png";
-import ProfileImage from "../assets/blockbase-image.jpg";
+import ProfilePic from "../../../assets/background-image.png";
+import ProfileImage from "../../../assets/blockbase-image.jpg";
 
-import { ArrowForwardOutline } from "react-ionicons";
-import { colorWhite, greyDarkest } from "../Variables";
+import FeatherIcons from "feather-icons-react";
+import { colorWhite, greyDarkest } from "../../../helpers/Variables";
 
 const TransInfo = ({ amount }) => {
   const theme = useSelector((state) => state.theme);
@@ -14,9 +14,9 @@ const TransInfo = ({ amount }) => {
   return (
     <StyledTransInfo className={theme ? "dark" : null}>
       <img src={ProfilePic} alt="Profile Pic" />
-      <ArrowForwardOutline width="2rem" height="2rem" />
+      <FeatherIcons icon="arrow-right" />
       {`$ ${amount}.00`}
-      <ArrowForwardOutline width="2rem" height="2rem" />
+      <FeatherIcons icon="arrow-right" />
       <img src={ProfileImage} alt="Profile Pic" />
     </StyledTransInfo>
   );

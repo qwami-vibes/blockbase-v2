@@ -1,30 +1,31 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import { Route, Switch } from "react-router";
+import { Route, Routes as Switch, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { useHistory } from "react-router";
 
-import { auth } from "../config/firebase";
+import { auth } from "../../config/firebase";
 
-import Aside from "../components/Aside";
-import Nav from "../components/Nav";
-import AccountBrief from "../components/AccountBrief";
+import Aside from "./components/Aside";
+import Nav from "./components/Nav";
+import AccountBrief from "./components/AccountBrief";
+import Onboarding from "./components/Onboarding";
 
-import { getCollection, getListApi } from "../api/api";
+import { getCollection, getListApi } from "../../api/api";
+import { colorWhite, greyDarker } from "../../helpers/Variables";
+import { setAlert, setUser } from "../../redux/actions";
 
-import WatchList from "../components/WatchList";
-import Wallet from "../components/Wallet";
-import Transactions from "../components/Transactions";
-import Trends from "../components/Trends";
-import { colorWhite, greyDarker } from "../Variables";
-import Alerts from "../components/Alerts";
-import { setAlert, setUser } from "../actions";
+import WatchList from "./components/WatchList";
+import Wallet from "./components/Wallet";
+import Transactions from "./components/Transactions";
+import Trends from "./components/Trends";
+import Alerts from "../../components/Alerts";
+import Page404 from "../Page404";
 
 const Dashboard = () => {
   const theme = useSelector((state) => state.theme);
   const alert = useSelector((state) => state.alert);
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(getListApi(dispatch));
@@ -33,7 +34,7 @@ const Dashboard = () => {
       //* check if user is logged in or not in firebase
       //* if user is null = not logged in, do nothing
       if (user === null) {
-        history.push("/");
+        navigate("/");
 
         return dispatch(
           setAlert({
@@ -58,7 +59,7 @@ const Dashboard = () => {
       //* send current user state to state manager
       dispatch(setUser(data));
     });
-  }, [dispatch, history]);
+  }, [dispatch, navigate]);
 
   return (
     <StyledDashboard className={theme ? "dark" : null}>
@@ -67,10 +68,12 @@ const Dashboard = () => {
       <Nav />
       <AccountBrief />
       <Switch>
-        <Route path="/dashboard" exact component={WatchList} />
-        <Route path="/dashboard/trends" component={Trends} />
-        <Route path="/dashboard/transactions" component={Transactions} />
-        <Route path="/dashboard/wallet" component={Wallet} />
+        <Route path="/" exact element={<WatchList />} />
+        <Route path="trends" element={<Trends />} />
+        <Route path="transactions" element={<Transactions />} />
+        <Route path="wallet" element={<Wallet />} />
+        <Route path="onboarding" element={<Onboarding />} />
+        <Route path="*" element={<Page404 />} />
       </Switch>
     </StyledDashboard>
   );

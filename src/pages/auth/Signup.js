@@ -2,13 +2,18 @@ import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
 
-import { setAlert } from "../actions";
-import ErrorHandlers from "../components/ErrorHandlers";
+import { setAlert } from "../../redux/actions";
+import ErrorHandlers from "../../components/ErrorHandlers";
 
-import { signupUser } from "../api/api";
+import { signupUser } from "../../api/api";
 
-import logoLarge from "../assets/blockbase-large.png";
-import { accentColor, colorWhite, lightGrey, successColor } from "../Variables";
+import logoLarge from "../../assets/blockbase-large.png";
+import {
+  accentColor,
+  colorWhite,
+  lightGrey,
+  successColor,
+} from "../../helpers/Variables";
 
 const Signin = ({ authType, setAuthType }) => {
   const dispatch = useDispatch();

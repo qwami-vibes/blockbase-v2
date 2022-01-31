@@ -1,6 +1,7 @@
 import axios from "axios";
 
 import { db } from "../config/firebase";
+import { auth } from "../config/firebase";
 import { collection, getDocs } from "firebase/firestore/lite";
 
 import {
@@ -10,9 +11,7 @@ import {
   fetchCoinsPricesFailure,
   fetchCoinsPricesPending,
   fetchCoinsPricesSuccess,
-} from "../actions";
-
-import { auth } from "../config/firebase";
+} from "../redux/actions";
 
 let coinList = [];
 

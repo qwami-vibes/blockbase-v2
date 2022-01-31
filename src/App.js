@@ -1,22 +1,23 @@
 import React, { useEffect } from "react";
-import { Route, Switch } from "react-router";
+import { Route, Routes as Switch, useNavigate } from "react-router-dom";
 
 import { auth } from "./config/firebase";
 
-import { useHistory } from "react-router";
 import { useDispatch } from "react-redux";
 
-import Signin from "./auth/Signin";
-import Dashboard from "./pages/Dashboard";
+import PublicRoute from "./pages/auth/PublicRoute";
+import Signin from "./pages/auth/Signin";
+import Dashboard from "./pages/home/Dashboard";
+import Page404 from "./pages/Page404";
 import GlobalStyles from "./components/GlobalStyles";
 
-import { setAlert, setUser } from "./actions";
+import { setAlert, setUser } from "./redux/actions";
 import { currentUser, signoutUser } from "./api/api";
 import ErrorHandlers from "./components/ErrorHandlers";
 
 function App() {
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
@@ -57,7 +58,7 @@ function App() {
 
       //* redirect user to the dashboard page in 3.5s after the alert popup
       setTimeout(() => {
-        history.push("/dashboard");
+        navigate("/");
       }, 3500);
 
       //* alert user for being logged in successfully
@@ -68,14 +69,22 @@ function App() {
         })
       );
     });
-  }, [dispatch, history]);
+  }, [dispatch, navigate]);
 
   return (
     <div className="App">
       <GlobalStyles />
       <Switch>
-        <Route exact path="/" component={Signin} />
-        <Route path="/dashboard" component={Dashboard} />
+        <Route exact path="/login" element={<Signin />} />
+        <Route
+          path="/*"
+          element={
+            <PublicRoute>
+              <Dashboard />
+            </PublicRoute>
+          }
+        />
+        <Route path="*" element={<Page404 />} />
       </Switch>
     </div>
   );

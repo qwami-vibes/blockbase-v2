@@ -2,14 +2,14 @@ import React from "react";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 
-import { colorWhite, grey } from "../Variables";
+import { colorWhite, grey } from "../../../helpers/Variables";
 import {
   dollarConvert,
   euroConvert,
   poundConvert,
   cedisConvert,
   nairaConvert,
-} from "./Convertors";
+} from "../../../components/Convertors";
 
 const Watch = ({ name, id, symbol, price, color, icon }) => {
   const theme = useSelector((state) => state.theme);

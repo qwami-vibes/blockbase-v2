@@ -3,14 +3,10 @@ import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import Search from "../components/Search";
-import {
-  MoonOutline,
-  SunnyOutline,
-  NotificationsOutline,
-} from "react-ionicons";
+import FeatherIcons from "feather-icons-react";
 
-import { setTheme } from "../actions";
-import { colorWhite } from "../Variables";
+import { setTheme } from "../../../redux/actions";
+import { colorWhite } from "../../../helpers/Variables";
 
 const Nav = () => {
   const dispatch = useDispatch();
@@ -25,10 +21,10 @@ const Nav = () => {
           className={theme ? "dark" : null}
           onClick={() => dispatch(setTheme())}
         >
-          {theme ? <SunnyOutline /> : <MoonOutline />}
+          {theme ? <FeatherIcons icon="sun" /> : <FeatherIcons icon="moon" />}
         </StyledLink>
         <StyledLink className={theme ? "dark" : null}>
-          <NotificationsOutline />
+          <FeatherIcons icon="bell" />
         </StyledLink>
       </StyledControls>
     </StyledNav>

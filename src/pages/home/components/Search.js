@@ -2,8 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 
-import { SearchOutline } from "react-ionicons";
-import { colorWhite, greyDarkest } from "../Variables";
+import FeatherIcons from "feather-icons-react";
+import { colorWhite, greyDarkest } from "../../../helpers/Variables";
 
 const Search = () => {
   const theme = useSelector((state) => state.theme);
@@ -17,7 +17,7 @@ const Search = () => {
         placeholder="Search for assets"
       />
       <StyledIcon className={theme ? "dark" : null} type="submit">
-        <SearchOutline />
+        <FeatherIcons icon="search" />
       </StyledIcon>
     </StyledSearch>
   );
