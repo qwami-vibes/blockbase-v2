@@ -1,19 +1,17 @@
 import axios from "axios";
 
-import { db } from "../config/firebase";
+import { db, storage } from "../config/firebase";
 import { auth } from "../config/firebase";
 import { collection, getDocs } from "firebase/firestore/lite";
 
 import {
   fetchCoinsFailure,
   fetchCoinsPending,
-  // fetchCoinsSuccess,
+  fetchCoinsSuccess,
   fetchCoinsPricesFailure,
   fetchCoinsPricesPending,
   fetchCoinsPricesSuccess,
 } from "../redux/actions";
-
-let coinList = [];
 
 export const everyCoin = () => async (dispatch) => {
   const baseUrl = "https://api.coinranking.com/v2";
@@ -24,24 +22,27 @@ export const everyCoin = () => async (dispatch) => {
       method: "GET",
       url: `${baseUrl}/coins`,
       headers: {
-        "x-access-token": process.env.REACT_APP_COINRANKING_ORIGINAL_KEY,
+        // "x-access-token": process.env.REACT_APP_COINRANKING_ORIGINAL_KEY,
       },
     });
 
-    console.log(res.data);
-    // res.data.data.coins.forEach((coin) => coinList.push(coin.symbol));
-    // dispatch(fetchCoinsSuccess(res.data.data));
-    // dispatch(getCoins());
+    dispatch(fetchCoinsSuccess(res.data.data));
+    const coinList = res.data.data.coins.reduce((arr, coin) => {
+      arr.push(coin.symbol);
+      return arr;
+    }, []);
+    dispatch(getCoins(coinList));
   } catch (err) {
     dispatch(fetchCoinsFailure(err));
   }
 };
 
-export const getCoins = () => async (dispatch) => {
+const getCoins = (coinList) => async (dispatch) => {
   const baseUrl = "https://min-api.cryptocompare.com/data";
   const currencies = "USD,GBP,GHS,EUR,NGN";
 
-  const coins = coinList.slice(0, 60).join(",");
+  // const coins = coinList.slice(0, 60).join(",");
+  const coins = coinList.join(",");
 
   const apikey = process.env.REACT_APP_CRYPTOCOMPARE_API_KEY;
 
@@ -74,6 +75,21 @@ export const signoutUser = async () => {
 
 export const currentUser = () => {
   return auth.currentUser;
+};
+
+export const updateProfile = (profile) => {
+  return auth.currentUser.updateProfile(profile);
+};
+
+export const uploadFile = (file, userId) => {
+  const storageRef = storage.ref();
+
+  const profileRef = storageRef(userId + ".png");
+  return;
+};
+
+export const sendEmailVerification = async () => {
+  return await auth.currentUser.sendEmailVerification();
 };
 
 export const getCollection = async (collectionName) => {

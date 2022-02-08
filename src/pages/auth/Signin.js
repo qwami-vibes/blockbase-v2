@@ -49,19 +49,22 @@ const Signin = () => {
 
     //* sign in user with the sigin from firebase auth
     signinUser(email, password)
-      .then((user) => {
+      .then((userCredentials) => {
         //* creating user data to add to state
         const data = {
-          user: user.user.providerData[0],
-          id: user.uid,
+          user: userCredentials.user.providerData[0],
+          userId: userCredentials.user.uid,
+          emailVerified: userCredentials.user.emailVerified,
         };
 
         //* push current user data to sate
         dispatch(setUser(data));
 
-        //* log user in by sending user to dashboard page
+        //* log user in by sending user to dashboard page if verified
         setTimeout(() => {
-          navigate("/watch");
+          userCredentials.user.displayName
+            ? navigate("/watch")
+            : navigate("/onboarding");
         }, 3500);
 
         //* alert user on login
@@ -76,7 +79,7 @@ const Signin = () => {
         //* remove disabled from button
         setPending(false);
 
-        console.log(err.code);
+        console.log(err);
 
         //* Error handler for the error actions
         ErrorHandlers(dispatch, err.code);

@@ -6,6 +6,7 @@ import Signin from "./pages/auth/Signin";
 import Dashboard from "./pages/home/Dashboard";
 import Page404 from "./pages/Page404";
 import GlobalStyles from "./components/GlobalStyles";
+import Onboarding from "./pages/home/components/Onboarding";
 
 function App() {
   return (
@@ -18,6 +19,14 @@ function App() {
           element={
             <PublicRoute>
               <Dashboard />
+            </PublicRoute>
+          }
+        />
+        <Route
+          path="/onboarding"
+          element={
+            <PublicRoute>
+              <Onboarding />
             </PublicRoute>
           }
         />

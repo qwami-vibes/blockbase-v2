@@ -1,8 +1,9 @@
 import React, { useRef, useState } from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
-import { setAlert } from "../../redux/actions";
+import { setAlert, setUser } from "../../redux/actions";
 import ErrorHandlers from "../../components/ErrorHandlers";
 
 import { signupUser } from "../../api/api";
@@ -17,6 +18,7 @@ import {
 
 const Signin = ({ authType, setAuthType }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [pending, setPending] = useState(false);
 
@@ -54,23 +56,30 @@ const Signin = ({ authType, setAuthType }) => {
         })
       );
     } else {
-      setPending(false);
+      setPending(true);
 
       //* fires promise funciton to create account
       signupUser(email, password)
-        .then((user) => {
-          // * sigin out user after the verification code has ben sent
-          // signoutUser()
-          //   .then()
-          //   .catch((err) => {
-          //     <ErrorHandlers code={err.code} />;
-          //   });
+        .then((userCredential) => {
+          //* creating user data to add to state
+          const data = {
+            user: userCredential.user.providerData[0],
+            emailVerified: userCredential.user.emailVerified,
+            userId: userCredential.user.uid,
+          };
+
+          //* push current user data to state
+          dispatch(setUser(data));
+
+          //* navigate new users to the onboarding page
+          setTimeout(() => {
+            navigate("/onboarding");
+          }, 3500);
 
           //* shows alert to user that the account was created successfully
           dispatch(
             setAlert({
-              message:
-                "Successfully created account. Please verify email to continue",
+              message: "Successfully created account",
               type: "success",
             })
           );

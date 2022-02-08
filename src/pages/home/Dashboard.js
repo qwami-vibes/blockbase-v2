@@ -10,7 +10,6 @@ import { everyCoin } from "../../api/api";
 import Aside from "./components/Aside";
 import Nav from "./components/Nav";
 import AccountBrief from "./components/AccountBrief";
-import Onboarding from "./components/Onboarding";
 
 import { colorWhite, greyDarker } from "../../helpers/Variables";
 import { setAlert, setUser } from "../../redux/actions";
@@ -73,7 +72,6 @@ const Dashboard = () => {
         <Route path="trends" element={<Trends />} />
         <Route path="transactions" element={<Transactions />} />
         <Route path="wallet" element={<Wallet />} />
-        <Route path="onboarding" element={<Onboarding />} />
         <Route path="*" element={<Page404 />} />
       </Switch>
     </StyledDashboard>
