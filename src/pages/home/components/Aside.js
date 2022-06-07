@@ -71,7 +71,11 @@ const Aside = () => {
         </StyledLink>
       </StyledLinks>
       <StyledProfile>
-        <img src={ProfilePic} alt="Profile Pic" />
+        <img
+          onClick={() => navigate("/settings")}
+          src={ProfilePic}
+          alt="Profile Pic"
+        />
       </StyledProfile>
       <StyledLinks>
         <StyledLink className={theme ? "dark" : null}>
@@ -164,6 +168,7 @@ const StyledProfile = styled(StyledFlex)`
     width: 7rem;
     height: 7rem;
     object-fit: cover;
+    cursor: pointer;
   }
 `;
 

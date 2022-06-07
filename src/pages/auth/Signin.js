@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import { signinUser } from "../../api/api";
 import { setAlert, setUser } from "../../redux/actions";
@@ -23,6 +24,7 @@ import {
   lightGrey,
   successColor,
   bgColor,
+  secondaryColor,
 } from "../../helpers/Variables";
 
 const Signin = () => {
@@ -62,7 +64,7 @@ const Signin = () => {
 
         //* log user in by sending user to dashboard page if verified
         setTimeout(() => {
-          userCredentials.user.displayName
+          userCredentials.user.displayName && userCredentials.user.emailVerified
             ? navigate("/watch")
             : navigate("/onboarding");
         }, 3500);
@@ -106,6 +108,9 @@ const Signin = () => {
                   Your account is around the corner monitoring what you asked
                   for. Login to continue
                 </StyledIntroSub>
+                <StyledForgotPassword>
+                  <Link to="/reset">forgot password?</Link>
+                </StyledForgotPassword>
                 <StyledInput>
                   <input
                     ref={emailValue}
@@ -189,6 +194,14 @@ const StyledContainer = styled.div`
   }
 `;
 
+const StyledForgotPassword = styled.div`
+  a {
+    font-size: 1.3rem;
+    color: ${secondaryColor};
+    text-transform: capitalize;
+  }
+`;
+
 const StyledContainerHolder = styled.div`
   position: absolute;
   width: 80%;
@@ -233,7 +246,7 @@ const StyledContainerInputs = styled.form`
   box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px,
     rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
   display: grid;
-  grid-template-rows: 0.7fr 0.5fr repeat(4, 0.8fr) 0.5fr;
+  grid-template-rows: 0.7fr 0.5fr 0.8fr 0.2fr repeat(3, 0.8fr) 0.5fr;
   padding: 1rem 5rem;
 `;
 

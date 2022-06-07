@@ -19,6 +19,7 @@ import FeatherIcons from "feather-icons-react";
 
 const AccountBrief = () => {
   const theme = useSelector((state) => state.theme);
+  const auth = useSelector((state) => state.auth);
   const [duration, setDuration] = useState("all");
 
   return (
@@ -28,7 +29,7 @@ const AccountBrief = () => {
           <img src={ProfilePic} alt="Profile Pic" />
         </StyledAccountProfile>
         <StyledAccountName className={theme ? "dark" : null}>
-          kwaame adjekum
+          {auth.user.displayName}
         </StyledAccountName>
         <StyledAccountBalance className={theme ? "dark" : null}>
           $420.00
@@ -85,7 +86,7 @@ const StyledAccountBrief = styled.div`
   display: grid;
   grid-template-rows: 0.7fr 1fr;
   background: ${lighterGrey};
-  grid-area: 1 / 3 / -1 /-1;
+  grid-area: 1 / 2 / -1 / -1;
 
   &.dark {
     background: ${grey};

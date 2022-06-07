@@ -7,6 +7,7 @@ import Dashboard from "./pages/home/Dashboard";
 import Page404 from "./pages/Page404";
 import GlobalStyles from "./components/GlobalStyles";
 import Onboarding from "./pages/home/components/Onboarding";
+import PasswordReset from "./pages/auth/PasswordReset";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       <GlobalStyles />
       <Switch>
         <Route exact path="/login" element={<Signin />} />
+        <Route exact path="/reset" element={<PasswordReset />} />
         <Route
           path="/*"
           element={

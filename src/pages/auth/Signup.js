@@ -61,6 +61,7 @@ const Signin = ({ authType, setAuthType }) => {
       //* fires promise funciton to create account
       signupUser(email, password)
         .then((userCredential) => {
+          console.log(userCredential);
           //* creating user data to add to state
           const data = {
             user: userCredential.user.providerData[0],

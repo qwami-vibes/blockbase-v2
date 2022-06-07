@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import styled from "styled-components";
-import { sendEmailVerification, updateProfile } from "../../../api/api";
+import { sendUserEmailVerification, updateUserProfile } from "../../../api/api";
 import { useDispatch, useSelector } from "react-redux";
 
 import {
@@ -11,15 +11,24 @@ import {
 } from "../../../helpers/Variables";
 import ErrorHandlers from "../../../components/ErrorHandlers";
 import { setAlert } from "../../../redux/actions";
+import { useNavigate } from "react-router-dom";
+import Alerts from "../../../components/Alerts";
 
 const Onboarding = () => {
-  const [disabled, setDisabled] = useState(true);
+  const navigate = useNavigate();
   const dispatch = useDispatch();
+
   const auth = useSelector((state) => state.auth);
+  const alert = useSelector((state) => state.alert);
+
+  const [disabled, setDisabled] = useState(true);
+  const [displayName, setDisplayName] = useState();
+  const [phoneNumber, setPhoneNumber] = useState();
+
   const formEle = useRef();
 
   const handleEmailVerification = () => {
-    sendEmailVerification()
+    sendUserEmailVerification()
       .then(
         dispatch(
           setAlert({
@@ -43,13 +52,32 @@ const Onboarding = () => {
   const handleSubmitForm = (e) => {
     e.preventDefault();
 
-    const data = { displayName: null, photoURL: null, phoneNumber: null };
+    const data = { displayName, photoURL: null, phoneNumber };
 
-    updateProfile(data);
+    updateUserProfile(data)
+      .then(() => {
+        setTimeout(() => {
+          navigate("/watch");
+        }, 3500);
+
+        dispatch(
+          setAlert({
+            message: "Profile updated successfully",
+            type: "success",
+          })
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+
+        //* Error handler for the error actions
+        ErrorHandlers(dispatch, err.code);
+      });
   };
 
   return (
     <StyledOnboarding>
+      {alert.visible && <Alerts />}
       <StyledContainer>
         <StyledTitle>
           <span>update profile</span>
@@ -58,7 +86,7 @@ const Onboarding = () => {
           <StyledVerified>
             <span className="verified">Your email is verified!!</span>
             <button className="success" onClick={handleEmailVerification}>
-              Verify email
+              Verified email
             </button>
           </StyledVerified>
         ) : (
@@ -79,6 +107,7 @@ const Onboarding = () => {
           <StyledGroup>
             <label htmlFor="fullname">Full Name</label>
             <input
+              onChange={(e) => setDisplayName(e.target.value)}
               type="text"
               name="fullname"
               id="fullname"
@@ -89,6 +118,7 @@ const Onboarding = () => {
           <StyledGroup>
             <label htmlFor="phone">Phone Number</label>
             <input
+              onChange={(e) => setPhoneNumber(e.target.value)}
               type="text"
               name="phone"
               id="phone"
@@ -145,8 +175,10 @@ const StyledVerified = styled.div`
   justify-content: space-around;
   align-items: center;
 
-  span.success {
-    color: ${successColor};
+  button.success {
+    background-color: ${successColor};
+    cursor: default;
+    /* opacity: 0.5; */
   }
 
   button {

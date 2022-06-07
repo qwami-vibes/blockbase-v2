@@ -1,8 +1,17 @@
 import axios from "axios";
 
-import { db, storage } from "../config/firebase";
+// import { db, storage,auth } from "../config/firebase";
 import { auth } from "../config/firebase";
-import { collection, getDocs } from "firebase/firestore/lite";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  updateProfile,
+  sendEmailVerification,
+  onAuthStateChanged,
+  sendPasswordResetEmail,
+} from "firebase/auth";
+// import { collection, getDocs } from "firebase/firestore/lite";
 
 import {
   fetchCoinsFailure,
@@ -62,38 +71,33 @@ const getCoins = (coinList) => async (dispatch) => {
 };
 
 export const signupUser = async (email, password) => {
-  return await auth.createUserWithEmailAndPassword(email, password);
+  return await createUserWithEmailAndPassword(auth, email, password);
 };
 
-export const signinUser = async (email, password) => {
-  return await auth.signInWithEmailAndPassword(email, password);
+export const signinUser = (email, password) => {
+  return signInWithEmailAndPassword(auth, email, password);
 };
 
-export const signoutUser = async () => {
-  return await auth.signOut();
+export const signoutUser = () => {
+  return signOut(auth);
+};
+
+export const currentUserLogged = (callBackFn) => {
+  return onAuthStateChanged(auth, callBackFn);
 };
 
 export const currentUser = () => {
   return auth.currentUser;
 };
 
-export const updateProfile = (profile) => {
-  return auth.currentUser.updateProfile(profile);
+export const updateUserProfile = (profile) => {
+  return updateProfile(auth.currentUser, profile);
 };
 
-export const uploadFile = (file, userId) => {
-  const storageRef = storage.ref();
-
-  const profileRef = storageRef(userId + ".png");
-  return;
+export const sendUserEmailVerification = () => {
+  return sendEmailVerification(auth.currentUser);
 };
 
-export const sendEmailVerification = async () => {
-  return await auth.currentUser.sendEmailVerification();
+export const sendUserResetEmail = (email) => {
+  return sendPasswordResetEmail(auth, email);
 };
-
-export const getCollection = async (collectionName) => {
-  return await getDocs(collection(db, collectionName));
-};
-
-export const addCollection = async (collectionName) => {};

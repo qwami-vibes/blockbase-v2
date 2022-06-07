@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { lightestGrey, lightGrey } from "../../../helpers/Variables";
+import { secondaryColor } from "../../../helpers/Variables";
 import { useSelector } from "react-redux";
 
 const ListHeader = () => {
@@ -25,7 +25,7 @@ const StyledHeader = styled.div`
   display: grid;
   grid-template-columns: 1.5fr repeat(5, 1fr);
   font-size: 1.5rem;
-  color: ${lightGrey};
+  color: ${secondaryColor};
 
   .items {
     width: 100%;
@@ -33,7 +33,7 @@ const StyledHeader = styled.div`
   }
 
   &.dark {
-    color: ${lightestGrey};
+    color: ${secondaryColor};
   }
 `;
 

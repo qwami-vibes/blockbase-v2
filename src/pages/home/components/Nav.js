@@ -14,7 +14,7 @@ const Nav = () => {
 
   return (
     <StyledNav>
-      <StyledName>Overview</StyledName>
+      <StyledName>overview</StyledName>
       <Search />
       <StyledControls>
         <StyledLink
@@ -34,6 +34,8 @@ const Nav = () => {
 const StyledNav = styled.nav`
   display: grid;
   grid-template-columns: 0.6fr 1fr 0.3fr;
+  width: 70%;
+  margin: 0 auto;
 `;
 
 const StyledName = styled.div`
@@ -41,6 +43,7 @@ const StyledName = styled.div`
   align-items: center;
   font-size: 2rem;
   margin-left: 22%;
+  text-transform: capitalize;
 `;
 
 const StyledControls = styled.div`
