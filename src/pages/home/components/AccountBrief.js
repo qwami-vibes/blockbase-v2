@@ -32,7 +32,7 @@ const AccountBrief = () => {
           {auth.user.displayName}
         </StyledAccountName>
         <StyledAccountBalance className={theme ? "dark" : null}>
-          $420.00
+          $0.00
         </StyledAccountBalance>
         <StyledAccountType className={theme ? "dark" : null}>
           investor
@@ -71,7 +71,7 @@ const AccountBrief = () => {
           </span>
         </StyledDuration>
         <StyledTransDetails>
-          {true
+          {false
             ? [120, 150, 100].map((info) => (
                 <TransInfo key={info} amount={info} />
               ))

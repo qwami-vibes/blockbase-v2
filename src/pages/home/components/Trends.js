@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import {
   lightGrey,
@@ -10,9 +10,18 @@ import { useSelector } from "react-redux";
 import ListHeader from "./ListHeader";
 import Watch from "./Watch";
 
-const Trends = () => {
+const Trends = ({ search }) => {
   const theme = useSelector((state) => state.theme);
   const coins = useSelector((state) => state.coins);
+  const [searchResult, setSearchResult] = useState();
+
+  console.log(coins.coins);
+
+  useEffect(() => {
+    setSearchResult(
+      coins.coins.filter((coin) => coin.name.toLowerCase().includes(search))
+    );
+  }, [search, coins]);
 
   return (
     <StyledTrends className={theme ? "dark" : null}>
@@ -25,6 +34,19 @@ const Trends = () => {
         <StyledTrendsList className={theme ? "dark" : null}>
           {coins.pending ? (
             <h1>Loading...</h1>
+          ) : search && search.length > 0 ? (
+            searchResult &&
+            searchResult.map((coin) => (
+              <Watch
+                key={coin.uuid}
+                id={coin.id}
+                symbol={coin.symbol}
+                name={coin.name}
+                color={coin.color}
+                price={coin.price}
+                icon={coin.iconUrl}
+              />
+            ))
           ) : (
             coins.coins &&
             coins.coins.map((coin) => (

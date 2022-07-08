@@ -52,7 +52,7 @@ const Onboarding = () => {
   const handleSubmitForm = (e) => {
     e.preventDefault();
 
-    const data = { displayName, photoURL: null, phoneNumber };
+    const data = { displayName, phoneNumber: phoneNumber, photoURL: null };
 
     updateUserProfile(data)
       .then(() => {
@@ -113,6 +113,7 @@ const Onboarding = () => {
               id="fullname"
               placeholder="eg. Kwaame Ofori-Adjekum"
               required
+              defaultValue={auth.user.displayName ?? ""}
             />
           </StyledGroup>
           <StyledGroup>
@@ -124,6 +125,7 @@ const Onboarding = () => {
               id="phone"
               placeholder="eg. +233658965656"
               required
+              defaultValue={auth.user.phoneNumber ?? ""}
             />
           </StyledGroup>
           <StyledButton>

@@ -2,8 +2,7 @@ import React, { useState, useRef } from "react";
 import styled from "styled-components";
 
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 import { signinUser } from "../../api/api";
 import { setAlert, setUser } from "../../redux/actions";

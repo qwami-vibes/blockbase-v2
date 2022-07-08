@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Route, Routes as Switch } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -21,6 +21,7 @@ const Dashboard = () => {
   const theme = useSelector((state) => state.theme);
   const alert = useSelector((state) => state.alert);
   const dispatch = useDispatch();
+  const [search, setSearch] = useState();
 
   useEffect(() => {
     dispatch(everyCoin());
@@ -30,10 +31,10 @@ const Dashboard = () => {
     <StyledDashboard className={theme ? "dark" : null}>
       {alert.visble && <Alerts />}
       <Aside />
-      <Nav />
+      <Nav setSearch={setSearch} />
       <Switch>
         <Route path="watch" exact element={<WatchList />} />
-        <Route path="trends" element={<Trends />} />
+        <Route path="trends" element={<Trends search={search} />} />
         <Route path="transactions" element={<Transactions />} />
         <Route path="wallet" element={<Wallet />} />
         <Route path="settings" element={<Settings />} />

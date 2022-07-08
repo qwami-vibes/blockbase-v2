@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // import { db, storage,auth } from "../config/firebase";
-import { auth } from "../config/firebase";
+import { auth, db } from "../config/firebase";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -11,7 +11,7 @@ import {
   onAuthStateChanged,
   sendPasswordResetEmail,
 } from "firebase/auth";
-// import { collection, getDocs } from "firebase/firestore/lite";
+import { addDoc, collection, getDocs } from "firebase/firestore";
 
 import {
   fetchCoinsFailure,
@@ -70,8 +70,8 @@ const getCoins = (coinList) => async (dispatch) => {
   }
 };
 
-export const signupUser = async (email, password) => {
-  return await createUserWithEmailAndPassword(auth, email, password);
+export const signupUser = (email, password) => {
+  return createUserWithEmailAndPassword(auth, email, password);
 };
 
 export const signinUser = (email, password) => {
@@ -100,4 +100,14 @@ export const sendUserEmailVerification = () => {
 
 export const sendUserResetEmail = (email) => {
   return sendPasswordResetEmail(auth, email);
+};
+
+export const addDataToDb = async (data) => {
+  const docRef = await addDoc(collection(db, "users"), data);
+  return docRef;
+};
+
+export const getDataFromDb = async () => {
+  const querySnapshot = await getDocs(collection(db, "users"));
+  return querySnapshot;
 };

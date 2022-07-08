@@ -5,8 +5,9 @@ import { useSelector } from "react-redux";
 import FeatherIcons from "feather-icons-react";
 import { colorWhite, greyDarkest } from "../../../helpers/Variables";
 
-const Search = () => {
+const Search = ({ setSearch }) => {
   const theme = useSelector((state) => state.theme);
+  const coins = useSelector((state) => state.coins);
 
   return (
     <StyledSearch className={theme ? "dark" : null}>
@@ -15,6 +16,7 @@ const Search = () => {
         name="search"
         id="search"
         placeholder="Search for assets"
+        onChange={(e) => setSearch(e.target.value)}
       />
       <StyledIcon className={theme ? "dark" : null} type="submit">
         <FeatherIcons icon="search" />
