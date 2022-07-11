@@ -11,9 +11,9 @@ import {
   nairaConvert,
 } from "../../../components/Convertors";
 
-const Watch = ({ name, id, symbol, price, color, icon }) => {
+const Watch = ({ name, symbol, color, icon }) => {
   const theme = useSelector((state) => state.theme);
-  const coinsPrices = useSelector((state) => state.coinsPrices);
+  const coinsPrices = useSelector((state) => state.coinsPrices).prices;
 
   return (
     <StyledWatch color={color || (theme ? colorWhite : grey)}>
@@ -50,6 +50,7 @@ const StyledWatch = styled.div`
   background-clip: text;
   color: transparent;
   -webkit-text-fill-color: text;
+  cursor: pointer;
 
   .crypto {
     &-list {

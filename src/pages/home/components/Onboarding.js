@@ -1,17 +1,26 @@
 import React, { useState, useRef } from "react";
 import styled from "styled-components";
-import { sendUserEmailVerification, updateUserProfile } from "../../../api/api";
+import {
+  getImagesRef,
+  getProfileImage,
+  sendUserEmailVerification,
+  updateUserProfile,
+  uploadProfile,
+} from "../../../api/api";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+
+import Avatar from "../../../assets/background-image.png";
 
 import {
   accentColor,
+  colorWhite,
   dangerColor,
   lightGrey,
   successColor,
 } from "../../../helpers/Variables";
 import ErrorHandlers from "../../../components/ErrorHandlers";
 import { setAlert } from "../../../redux/actions";
-import { useNavigate } from "react-router-dom";
 import Alerts from "../../../components/Alerts";
 
 const Onboarding = () => {
@@ -21,48 +30,46 @@ const Onboarding = () => {
   const auth = useSelector((state) => state.auth);
   const alert = useSelector((state) => state.alert);
 
+  const [imageDisabled, setImageDisabled] = useState(false);
   const [disabled, setDisabled] = useState(true);
   const [displayName, setDisplayName] = useState();
-  const [phoneNumber, setPhoneNumber] = useState();
+  const [selPhoto, setSelPhoto] = useState(auth.user.photoURL);
+  const [photoFile, setPhotoFile] = useState();
 
   const formEle = useRef();
+  const fileEle = useRef();
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    const url = URL.createObjectURL(file);
+    setSelPhoto(url);
+    setPhotoFile(file);
+  };
+
+  const handleImageUpload = () => {
+    setImageDisabled(true);
+
+    uploadProfile(auth.userId, photoFile)
+      .then(() => {
+        dispatch(
+          setAlert({
+            message: "Profile image uploaded successfully",
+            type: "success",
+          })
+        );
+      })
+      .catch((err) => {
+        ErrorHandlers(dispatch, err.code);
+      })
+      .finally(() => setImageDisabled(false));
+  };
 
   const handleEmailVerification = () => {
     sendUserEmailVerification()
-      .then(
+      .then(() => {
         dispatch(
           setAlert({
             message: "Email verification sent successfully",
-            type: "success",
-          })
-        )
-      )
-      .catch((err) => {
-        console.log(err);
-
-        //* Error handler for the error actions
-        ErrorHandlers(dispatch, err.code);
-      });
-  };
-
-  const handleCheckValidity = () => {
-    setDisabled(!formEle.current.checkValidity());
-  };
-
-  const handleSubmitForm = (e) => {
-    e.preventDefault();
-
-    const data = { displayName, phoneNumber: phoneNumber, photoURL: null };
-
-    updateUserProfile(data)
-      .then(() => {
-        setTimeout(() => {
-          navigate("/watch");
-        }, 3500);
-
-        dispatch(
-          setAlert({
-            message: "Profile updated successfully",
             type: "success",
           })
         );
@@ -75,6 +82,43 @@ const Onboarding = () => {
       });
   };
 
+  const handleCheckValidity = () => {
+    setDisabled(
+      fileEle.current.files.length <= 0
+        ? true
+        : !formEle.current.checkValidity()
+    );
+  };
+
+  const handleSubmitForm = (e) => {
+    e.preventDefault();
+
+    getImagesRef("profiles/").then((ref) => {
+      ref.items.forEach((item) => {
+        getProfileImage(item).then((image) => {
+          if (image.includes(auth.userId)) {
+            updateUserProfile({ displayName, photoURL: image })
+              .then(() => {
+                setTimeout(() => {
+                  navigate("/watch");
+                }, 3500);
+
+                dispatch(
+                  setAlert({
+                    message: "Profile updated successfully",
+                    type: "success",
+                  })
+                );
+              })
+              .catch((err) => {
+                ErrorHandlers(dispatch, err.code);
+              });
+          }
+        });
+      });
+    });
+  };
+
   return (
     <StyledOnboarding>
       {alert.visible && <Alerts />}
@@ -85,9 +129,7 @@ const Onboarding = () => {
         {auth.emailVerified ? (
           <StyledVerified>
             <span className="verified">Your email is verified!!</span>
-            <button className="success" onClick={handleEmailVerification}>
-              Verified email
-            </button>
+            <button className="success">Verified email</button>
           </StyledVerified>
         ) : (
           <StyledVerified>
@@ -100,9 +142,36 @@ const Onboarding = () => {
           onChange={handleCheckValidity}
           onSubmit={handleSubmitForm}
         >
-          <StyledGroupPic>
-            <label htmlFor="photoUrl">Choose a profile pic</label>
-            <input type="file" name="photo" id="photoUrl" />
+          <StyledGroupPic image={selPhoto}>
+            <div>
+              <StyledPhoto src={selPhoto ?? Avatar} alt="Profile imgs" />
+            </div>
+            <div>
+              <label htmlFor="photoUrl">Choose a profile pic</label>
+              <input
+                ref={fileEle}
+                type="file"
+                name="photo"
+                id="photoUrl"
+                onChange={handleImageChange}
+              />
+            </div>
+            <button
+              onClick={handleImageUpload}
+              disabled={imageDisabled}
+              style={{
+                textTransform: "capitalize",
+                paddingLeft: 10,
+                paddingRight: 10,
+                paddingTop: 20,
+                paddingBottom: 20,
+                background: accentColor,
+                color: colorWhite,
+                cursor: "pointer",
+              }}
+            >
+              upload profile
+            </button>
           </StyledGroupPic>
           <StyledGroup>
             <label htmlFor="fullname">Full Name</label>
@@ -116,7 +185,7 @@ const Onboarding = () => {
               defaultValue={auth.user.displayName ?? ""}
             />
           </StyledGroup>
-          <StyledGroup>
+          {/* <StyledGroup>
             <label htmlFor="phone">Phone Number</label>
             <input
               onChange={(e) => setPhoneNumber(e.target.value)}
@@ -127,7 +196,7 @@ const Onboarding = () => {
               required
               defaultValue={auth.user.phoneNumber ?? ""}
             />
-          </StyledGroup>
+          </StyledGroup> */}
           <StyledButton>
             <button disabled={disabled} type="submit">
               Complete Profile Update
@@ -179,8 +248,7 @@ const StyledVerified = styled.div`
 
   button.success {
     background-color: ${successColor};
-    cursor: default;
-    /* opacity: 0.5; */
+    cursor: not-allowed;
   }
 
   button {
@@ -220,10 +288,10 @@ const StyledGroup = styled.div`
 const StyledGroupPic = styled(StyledGroup)`
   flex-direction: row;
   align-items: center;
-  justify-content: center;
+  justify-content: space-evenly;
 
   label {
-    background-color: ${dangerColor};
+    background-color: ${(props) => (props.image ? successColor : dangerColor)};
     padding: 2rem 3rem;
     color: #fff;
     cursor: pointer;
@@ -252,6 +320,13 @@ const StyledButton = styled.div`
       opacity: 0.5;
     }
   }
+`;
+
+const StyledPhoto = styled.img`
+  width: 12rem;
+  height: 12rem;
+  border-radius: 10rem;
+  object-fit: cover;
 `;
 
 export default Onboarding;

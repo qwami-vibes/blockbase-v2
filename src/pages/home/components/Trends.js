@@ -15,8 +15,6 @@ const Trends = ({ search }) => {
   const coins = useSelector((state) => state.coins);
   const [searchResult, setSearchResult] = useState();
 
-  console.log(coins.coins);
-
   useEffect(() => {
     setSearchResult(
       coins.coins.filter((coin) => coin.name.toLowerCase().includes(search))

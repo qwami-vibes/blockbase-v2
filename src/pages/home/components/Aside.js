@@ -22,6 +22,7 @@ import { resetUser } from "../../../redux/actions";
 
 const Aside = () => {
   const theme = useSelector((state) => state.theme);
+  const auth = useSelector((state) => state.auth);
   const { pathname } = useLocation();
 
   const dispatch = useDispatch();
@@ -73,7 +74,7 @@ const Aside = () => {
       <StyledProfile>
         <img
           onClick={() => navigate("/settings")}
-          src={ProfilePic}
+          src={auth.user.photoURL ?? ProfilePic}
           alt="Profile Pic"
         />
       </StyledProfile>

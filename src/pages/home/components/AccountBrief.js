@@ -26,7 +26,7 @@ const AccountBrief = () => {
     <StyledAccountBrief className={theme ? "dark" : null}>
       <StyledAccountDetails className={theme ? "dark" : null}>
         <StyledAccountProfile>
-          <img src={ProfilePic} alt="Profile Pic" />
+          <img src={auth.user.photoURL ?? ProfilePic} alt="Profile Pic" />
         </StyledAccountProfile>
         <StyledAccountName className={theme ? "dark" : null}>
           {auth.user.displayName}

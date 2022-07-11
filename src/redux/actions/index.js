@@ -9,6 +9,9 @@ const FETCH_COINS_FAILURE = "FETCH_COINS_FAILURE";
 const FETCH_COINS_PRICES_SUCCESS = "FETCH_COINS_PRICES_SUCCESS";
 const FETCH_COINS_PRICES_PENDING = "FETCH_COINS_PRICES_PENDING";
 const FETCH_COINS_PRICES_FAILURE = "FETCH_COINS_PRICES_FAILURE";
+const FETCH_COINS_MARKETCAP_SUCCESS = "FETCH_COINS_MARKETCAP_SUCCESS";
+const FETCH_COINS_MARKETCAP_PENDING = "FETCH_COINS_MARKETCAP_PENDING";
+const FETCH_COINS_MARKETCAP_FAILURE = "FETCH_COINS_MARKETCAP_FAILURE";
 
 export const setUser = (user) => {
   return {
@@ -75,9 +78,27 @@ export const fetchCoinsPricesSuccess = (data) => {
   };
 };
 
-export const fetchCoinsPricesFailure = (err) => {
+export const fetchCoinsPricesFailure = () => {
   return {
     type: FETCH_COINS_PRICES_FAILURE,
-    payload: err,
+  };
+};
+
+export const fetchCoinsMarketcapPending = () => {
+  return {
+    type: FETCH_COINS_MARKETCAP_PENDING,
+  };
+};
+
+export const fetchCoinsMarketcapSuccess = (data) => {
+  return {
+    type: FETCH_COINS_MARKETCAP_SUCCESS,
+    payload: data,
+  };
+};
+
+export const fetchCoinsMarketcapFailure = () => {
+  return {
+    type: FETCH_COINS_MARKETCAP_FAILURE,
   };
 };

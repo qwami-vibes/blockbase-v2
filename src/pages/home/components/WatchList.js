@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 
 // import Watch from "./Watch";
 import {
   colorWhite,
+  grey,
   lightGrey,
   primaryColor,
   secondaryColor,
@@ -12,13 +13,47 @@ import {
 import FeatherIcons from "feather-icons-react";
 import ListHeader from "./ListHeader";
 import AccountBrief from "./AccountBrief";
+import Card from "./Card";
 
 const WatchList = () => {
   const theme = useSelector((state) => state.theme);
+  const favs = useSelector((state) => state.favs);
+  const coinsPrices = useSelector((state) => state.coinsPrices);
+  const [currentControl, setCurrentControl] = useState(0);
 
   return (
     <StyledWatchlist className={theme ? "dark" : null}>
-      <StyledTop></StyledTop>
+      <StyledTop>
+        <StyledCardContainer control={currentControl}>
+          {coinsPrices.marketCap.length <= 0 ? (
+            <div>No data to show</div>
+          ) : (
+            coinsPrices?.marketCap.map((item, index) => (
+              <Card
+                key={index}
+                currentControl={currentControl}
+                marketcap="marketcap"
+                index={index}
+                data={item}
+              />
+            ))
+          )}
+          <div className="controls">
+            {coinsPrices?.marketCap.map((item, index) => (
+              <div
+                key={index}
+                onClick={() => setCurrentControl(index)}
+                className={
+                  index === currentControl ? "control active" : "control"
+                }
+              ></div>
+            ))}
+          </div>
+        </StyledCardContainer>
+        {/* <StyledCardContainer>
+          <Card />
+        </StyledCardContainer> */}
+      </StyledTop>
       <StyledContainer>
         <StyledTitle className={theme ? "dark" : null}>
           <div className="title">
@@ -27,7 +62,13 @@ const WatchList = () => {
           </div>
           <ListHeader />
         </StyledTitle>
-        <StyledList className={theme ? "dark" : null}></StyledList>
+        <StyledList className={theme ? "dark" : null}>
+          {favs && favs.length > 0 ? (
+            <div>list of favorites</div>
+          ) : (
+            <StyledNoFavs>no favorites list</StyledNoFavs>
+          )}
+        </StyledList>
       </StyledContainer>
       <AccountBrief />
     </StyledWatchlist>
@@ -38,7 +79,7 @@ const StyledWatchlist = styled.div`
   grid-area: 2 / 2 / -1 / 3;
   display: grid;
   grid-template-columns: 1fr 0.3fr;
-  grid-template-rows: 0.45fr 1fr;
+  grid-template-rows: 0.6fr 1fr;
 `;
 
 const StyledContainer = styled.div`
@@ -57,6 +98,9 @@ const StyledContainer = styled.div`
 
 const StyledTop = styled.div`
   grid-area: 1 / 1 / 2 / 2;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
 `;
 
 const StyledTitle = styled.div`
@@ -116,6 +160,49 @@ const StyledList = styled.div`
   &.dark {
     &::-webkit-scrollbar {
       background: white;
+    }
+  }
+`;
+
+const StyledNoFavs = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  font-size: 1.8rem;
+  text-transform: capitalize;
+`;
+
+const StyledCardContainer = styled.div`
+  width: 40%;
+  height: 32rem;
+  max-height: 35rem;
+  /* overflow: hidden; */
+  position: relative;
+  /* transform: ${(props) => `translateY(${props.control * 100}%)`}; */
+
+  .controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    position: absolute;
+    right: 0%;
+    top: 50%;
+    transform: translate(0, -50%);
+
+    .control {
+      width: 1.5rem;
+      height: 1.5rem;
+      background-color: ${grey};
+      border: 1px solid ${colorWhite};
+      border-radius: 100rem;
+      margin: 0.3rem 0;
+      cursor: pointer;
+
+      &.active {
+        background-color: ${secondaryColor};
+      }
     }
   }
 `;

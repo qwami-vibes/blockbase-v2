@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // import { db, storage,auth } from "../config/firebase";
-import { auth, db } from "../config/firebase";
+import { auth, db, storage } from "../config/firebase";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -12,6 +12,7 @@ import {
   sendPasswordResetEmail,
 } from "firebase/auth";
 import { addDoc, collection, getDocs } from "firebase/firestore";
+import { getDownloadURL, listAll, ref, uploadBytes } from "firebase/storage";
 
 import {
   fetchCoinsFailure,
@@ -20,6 +21,10 @@ import {
   fetchCoinsPricesFailure,
   fetchCoinsPricesPending,
   fetchCoinsPricesSuccess,
+  setAlert,
+  fetchCoinsMarketcapPending,
+  fetchCoinsMarketcapSuccess,
+  fetchCoinsMarketcapFailure,
 } from "../redux/actions";
 
 export const everyCoin = () => async (dispatch) => {
@@ -41,8 +46,16 @@ export const everyCoin = () => async (dispatch) => {
       return arr;
     }, []);
     dispatch(getCoins(coinList));
+    dispatch(getHighestMarketCap());
   } catch (err) {
-    dispatch(fetchCoinsFailure(err));
+    dispatch(fetchCoinsFailure());
+    dispatch(
+      setAlert({
+        message: "Something went wrong fetching data",
+        type: "danger",
+      })
+    );
+    console.log(err);
   }
 };
 
@@ -50,7 +63,6 @@ const getCoins = (coinList) => async (dispatch) => {
   const baseUrl = "https://min-api.cryptocompare.com/data";
   const currencies = "USD,GBP,GHS,EUR,NGN";
 
-  // const coins = coinList.slice(0, 60).join(",");
   const coins = coinList.join(",");
 
   const apikey = process.env.REACT_APP_CRYPTOCOMPARE_API_KEY;
@@ -65,7 +77,39 @@ const getCoins = (coinList) => async (dispatch) => {
     });
     dispatch(fetchCoinsPricesSuccess(res.data));
   } catch (error) {
-    dispatch(fetchCoinsPricesFailure(error));
+    dispatch(fetchCoinsPricesFailure());
+    dispatch(
+      setAlert({
+        message: "Something went wrong fetching data",
+        type: "danger",
+      })
+    );
+    console.log(error);
+  }
+};
+
+const getHighestMarketCap = () => async (dispatch) => {
+  const baseUrl = "https://min-api.cryptocompare.com/data";
+  const currencies = "GHS";
+  const apikey = process.env.REACT_APP_CRYPTOCOMPARE_API_KEY;
+
+  dispatch(fetchCoinsMarketcapPending());
+
+  try {
+    const res = await axios({
+      method: "GET",
+      url: `${baseUrl}/top/mktcapfull`,
+      params: { api_key: apikey, tsym: currencies, limit: 5 },
+    });
+    dispatch(fetchCoinsMarketcapSuccess(res.data.Data));
+  } catch (error) {
+    dispatch(fetchCoinsMarketcapFailure());
+    dispatch(
+      setAlert({
+        message: "Something went wrong fetching data",
+        type: "danger",
+      })
+    );
     console.log(error);
   }
 };
@@ -110,4 +154,17 @@ export const addDataToDb = async (data) => {
 export const getDataFromDb = async () => {
   const querySnapshot = await getDocs(collection(db, "users"));
   return querySnapshot;
+};
+
+export const uploadProfile = (userId, file) => {
+  const fileRef = ref(storage, `profiles/${userId}.png`);
+  return uploadBytes(fileRef, file);
+};
+
+export const getProfileImage = (item) => {
+  return getDownloadURL(item);
+};
+
+export const getImagesRef = (path) => {
+  return listAll(ref(storage, path));
 };
