@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useSelector } from "react-redux";
 
 // import Watch from "./Watch";
+
 import {
   colorWhite,
   grey,
@@ -13,7 +14,7 @@ import {
 import FeatherIcons from "feather-icons-react";
 import ListHeader from "./ListHeader";
 import AccountBrief from "./AccountBrief";
-import Card from "./Card";
+import Card, { MarketCapCard } from "./Card";
 
 const WatchList = () => {
   const theme = useSelector((state) => state.theme);
@@ -29,7 +30,7 @@ const WatchList = () => {
             <div>No data to show</div>
           ) : (
             coinsPrices?.marketCap.map((item, index) => (
-              <Card
+              <MarketCapCard
                 key={index}
                 currentControl={currentControl}
                 marketcap="marketcap"
@@ -50,9 +51,9 @@ const WatchList = () => {
             ))}
           </div>
         </StyledCardContainer>
-        {/* <StyledCardContainer>
+        <StyledCardContainer>
           <Card />
-        </StyledCardContainer> */}
+        </StyledCardContainer>
       </StyledTop>
       <StyledContainer>
         <StyledTitle className={theme ? "dark" : null}>
@@ -177,9 +178,8 @@ const StyledCardContainer = styled.div`
   width: 40%;
   height: 32rem;
   max-height: 35rem;
-  /* overflow: hidden; */
+  overflow: hidden;
   position: relative;
-  /* transform: ${(props) => `translateY(${props.control * 100}%)`}; */
 
   .controls {
     display: flex;
