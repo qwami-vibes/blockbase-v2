@@ -14,7 +14,7 @@ import {
   successColor,
 } from "../../../helpers/Variables";
 
-const Card = ({ marketcap, data, index, currentControl }) => {
+export const MarketCapCard = ({ marketcap, data, index, currentControl }) => {
   const coins = useSelector((state) => state.coins);
   const [img, setImg] = useState();
 
@@ -57,6 +57,24 @@ const Card = ({ marketcap, data, index, currentControl }) => {
       <div className="other">
         Last updated: &nbsp;<span> {data?.DISPLAY.GHS.LASTUPDATE}</span>
       </div>
+    </StyledCard>
+  );
+};
+
+const Card = ({ data, index }) => {
+  const coins = useSelector((state) => state.coins);
+
+  return (
+    <StyledCard index={index}>
+      <div className="heading">New Currencies</div>
+      <div className="coin">
+        <div>
+          {/* <img src={img} alt={`${data?.CoinInfo.Name} smaller img`} /> */}
+        </div>
+        <div className="coinPrice"></div>
+        <div></div>
+      </div>
+      <div className="other"></div>
     </StyledCard>
   );
 };
