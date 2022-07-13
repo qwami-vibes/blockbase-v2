@@ -7,7 +7,6 @@ import { colorWhite, greyDarkest } from "../../../helpers/Variables";
 
 const Search = ({ setSearch }) => {
   const theme = useSelector((state) => state.theme);
-  const coins = useSelector((state) => state.coins);
 
   return (
     <StyledSearch className={theme ? "dark" : null}>

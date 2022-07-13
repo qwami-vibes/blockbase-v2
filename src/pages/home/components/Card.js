@@ -61,16 +61,12 @@ export const MarketCapCard = ({ marketcap, data, index, currentControl }) => {
   );
 };
 
-const Card = ({ data, index }) => {
-  const coins = useSelector((state) => state.coins);
-
+const Card = ({ index }) => {
   return (
     <StyledCard index={index}>
       <div className="heading">New Currencies</div>
       <div className="coin">
-        <div>
-          {/* <img src={img} alt={`${data?.CoinInfo.Name} smaller img`} /> */}
-        </div>
+        <div></div>
         <div className="coinPrice"></div>
         <div></div>
       </div>

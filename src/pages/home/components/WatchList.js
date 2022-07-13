@@ -14,7 +14,7 @@ import {
 import FeatherIcons from "feather-icons-react";
 import ListHeader from "./ListHeader";
 import AccountBrief from "./AccountBrief";
-import Card, { MarketCapCard } from "./Card";
+import { MarketCapCard } from "./Card";
 
 const WatchList = () => {
   const theme = useSelector((state) => state.theme);
