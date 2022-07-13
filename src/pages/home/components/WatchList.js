@@ -51,9 +51,6 @@ const WatchList = () => {
             ))}
           </div>
         </StyledCardContainer>
-        <StyledCardContainer>
-          <Card />
-        </StyledCardContainer>
       </StyledTop>
       <StyledContainer>
         <StyledTitle className={theme ? "dark" : null}>
